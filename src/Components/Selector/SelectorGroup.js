@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Selector from './Selector';
 
 const SelectorGroup = (props) => {
@@ -20,7 +20,7 @@ const SelectorGroup = (props) => {
           />
         );
       })}
-      <button onClick={props.checkAll}>check</button>
+      <button onClick={() => props.checkAll(props.groupName)}>check</button>
       <button onClick={() => props.uncheckAll(props.groupName)}>uncheck</button>
     </div>
   );

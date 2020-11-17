@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { after, cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 import { dictionary } from '../../InternalData/dictionary';
 import SelectorGroup from './SelectorGroup';
@@ -9,7 +9,7 @@ import './GroupsContainer.css';
 const GroupsContainer = () => {
   const [groups, setGroups] = useState();
 
-  console.log(groups);
+  const [selectedGroup, setSelectedGroup] = useState([]);
 
   useEffect(() => {
     for (let [key] of Object.entries(dictionary)) {
@@ -20,10 +20,22 @@ const GroupsContainer = () => {
     setGroups(dictionary);
   }, []);
 
-  const checkAllHandler = () => {};
+  const checkAllHandler = (kanaType) => {
+    const checkedAll = cloneDeep(groups);
+    Object.keys(checkedAll[kanaType]).map((group) => {
+      return (checkedAll[kanaType][group].checked = true);
+    });
+
+    setGroups(checkedAll);
+  };
 
   const uncheckAllHandler = (kanaType) => {
-    const allUnchecked = Object(groups[kanaType]);
+    const uncheckedAll = cloneDeep(groups);
+    Object.keys(uncheckedAll[kanaType]).map((group) => {
+      return (uncheckedAll[kanaType][group].checked = false);
+    });
+
+    setGroups(uncheckedAll);
   };
 
   const checkHandler = (kanaType, group) => {
@@ -33,6 +45,7 @@ const GroupsContainer = () => {
     setGroups(afterSelection);
   };
 
+  //testing purposes only, remove it later
   const showSelectedHandler = () => {
     const selected = [];
     for (let kana in groups) {
@@ -42,13 +55,13 @@ const GroupsContainer = () => {
         }
       }
     }
-    console.log(selected);
+    setSelectedGroup([...selected]);
   };
 
   let content;
 
   if (!groups) {
-    content = <p>Loading</p>;
+    content = <p>お待ち下さい</p>;
   } else {
     content = (
       <>
