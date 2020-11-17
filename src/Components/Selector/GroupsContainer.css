@@ -1,0 +1,6 @@
+.groupsContainer {
+  display: flex;
+  column-count: 2;
+  gap: 14rem;
+  justify-content: center;
+}

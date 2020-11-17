@@ -1,0 +1,11 @@
+.selector {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border-radius: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.selected {
+  background-color: greenyellow;
+}
