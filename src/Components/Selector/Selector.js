@@ -8,6 +8,7 @@ const Selector = (props) => {
         props.kana
       } group`}</label>
       <input
+        className="selectorInput"
         onChange={() => props.check(props.group)}
         type="checkbox"
         id={props.group}

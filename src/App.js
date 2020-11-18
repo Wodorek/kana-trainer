@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import GroupsContainer from './Components/Selector/GroupsContainer';
-import SelectorGroup from './Components/Selector/SelectorGroup';
-import Selector from './Components/Selector/Selector';
+import GroupsContainer from './Pages/GroupsContainer';
+import Quiz from './Pages/Quiz';
+import Score from './Pages/Score';
+import QuizContext from './shared/context/quiz-context';
 
 const App = () => {
+  //Set up context to check if user picked kana groups for quiz
+  //to prevent just typing URL instead clicking the button
+
+  const [quizOn, setQuizOn] = useState(false);
+  const value = { quizOn, setQuizOn };
+
   return (
-    <div className="App">
-      <GroupsContainer />
-    </div>
+    <QuizContext.Provider value={value}>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/quiz" component={Quiz} />
+          <Route path="/score" component={Score} />
+          <Route path="/" component={GroupsContainer} />
+          <Redirect to="/" />
+        </Switch>
+      </BrowserRouter>
+    </QuizContext.Provider>
   );
 };
 
