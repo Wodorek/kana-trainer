@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { cloneDeep } from 'lodash';
 
-import { dictionary } from '../../InternalData/dictionary';
-import SelectorGroup from './SelectorGroup';
+import { dictionary } from '../InternalData/dictionary';
+import SelectorGroup from '../Components/Selector/SelectorGroup';
 
 import './GroupsContainer.css';
+import { useHistory } from 'react-router-dom';
+import QuizContext from '../shared/context/quiz-context';
 
 const GroupsContainer = () => {
+  const { setQuizOn } = useContext(QuizContext);
+
   const [groups, setGroups] = useState();
 
-  const [selectedGroup, setSelectedGroup] = useState([]);
+  const history = useHistory();
+
+  // const [selectedGroup, setSelectedGroup] = useState([]);
 
   useEffect(() => {
     for (let [key] of Object.entries(dictionary)) {
@@ -45,18 +51,23 @@ const GroupsContainer = () => {
     setGroups(afterSelection);
   };
 
-  //testing purposes only, remove it later
-  const showSelectedHandler = () => {
-    const selected = [];
-    for (let kana in groups) {
-      for (let group in groups[kana]) {
-        if (groups[kana][group].checked === true) {
-          selected.push(group);
-        }
-      }
-    }
-    setSelectedGroup([...selected]);
+  const quizStartHandler = () => {
+    setQuizOn(true);
+    history.push('/quiz');
   };
+
+  //testing purposes only, remove it later
+  // const showSelectedHandler = () => {
+  //   const selected = [];
+  //   for (let kana in groups) {
+  //     for (let group in groups[kana]) {
+  //       if (groups[kana][group].checked === true) {
+  //         selected.push(group);
+  //       }
+  //     }
+  //   }
+  //   setSelectedGroup([...selected]);
+  // };
 
   let content;
 
@@ -79,7 +90,7 @@ const GroupsContainer = () => {
             );
           })}
         </div>
-        <button onClick={showSelectedHandler}>Show</button>
+        <button onClick={quizStartHandler}>Start</button>
       </>
     );
   }

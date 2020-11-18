@@ -1,0 +1,28 @@
+.selectorGroup {
+  justify-content: space-around;
+  width: 40vw;
+}
+
+.selectorElements {
+  columns: 2;
+  align-self: center;
+  align-items: center;
+  justify-self: center;
+  justify-items: center;
+}
+
+.selectorGroup h1 {
+  font-weight: 500;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+.sgButtons {
+  margin-top: 1rem;
+  height: 2rem;
+  display: flex;
+  justify-content: space-around;
+}
+.sgButtons button {
+  border-radius: 0.5rem;
+}
