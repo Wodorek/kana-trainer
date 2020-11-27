@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import GroupsContainer from './Pages/GroupsContainer';
+import QuizContext from './shared/context/quiz-context';
+import SelectionScreen from './Pages/SelectionScreen';
 import Quiz from './Pages/Quiz';
 import Score from './Pages/Score';
-import QuizContext from './shared/context/quiz-context';
 
 const App = () => {
   //Set up context to check if user picked kana groups for quiz
@@ -19,7 +19,7 @@ const App = () => {
         <Switch>
           <Route path="/quiz" component={Quiz} />
           <Route path="/score" component={Score} />
-          <Route path="/" component={GroupsContainer} />
+          <Route path="/" component={SelectionScreen} />
           <Redirect to="/" />
         </Switch>
       </BrowserRouter>

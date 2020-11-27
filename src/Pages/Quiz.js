@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import QuizContext from '../shared/context/quiz-context';
 
 const Quiz = () => {
-  const { quizOn, setQuizOn } = useContext(QuizContext);
+  const { quizOn, selectedGroups } = useContext(QuizContext);
 
   return (
     <div>
-      <p>{`${quizOn}`}</p>
+      <p>{`${selectedGroups}`}</p>
     </div>
   );
 };
