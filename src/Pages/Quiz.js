@@ -1,12 +1,9 @@
-import React, { useContext } from 'react';
-import QuizContext from '../shared/context/quiz-context';
+import React from 'react';
 
 const Quiz = () => {
-  const { quizOn, selectedGroups } = useContext(QuizContext);
-
   return (
     <div>
-      <p>{`${selectedGroups}`}</p>
+      <p>xd</p>
     </div>
   );
 };

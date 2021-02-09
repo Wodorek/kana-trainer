@@ -1,52 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { cloneDeep } from 'lodash';
-
-import QuizContext from '../shared/context/quiz-context';
 
 import { dictionary } from '../InternalData/dictionary';
 import SelectorsContainer from '../Components/Selector/SelectorsContainer';
+import { useStore } from '../shared/context/store';
 import './SelectionScreen.css';
 
 const SelectionScreen = () => {
-  const { setQuizOn } = useContext(QuizContext);
-
   const [groups, setGroups] = useState();
+
+  const { state, dispatch } = useStore();
 
   const history = useHistory();
 
-  // const [selectedGroups, setSelectedGroups] = useState([]);
-
   useEffect(() => {
-    for (let [key] of Object.entries(dictionary)) {
-      for (let [, values] of Object.entries(dictionary[key])) {
-        values.selected = false;
-      }
-    }
     setGroups(dictionary);
   }, []);
-
-  const bundleSelectHandler = (kanaType, setSelected) => {
-    const allGroups = cloneDeep(groups);
-    Object.keys(allGroups[kanaType]).map((group) => {
-      return (allGroups[kanaType][group].selected = setSelected);
-    });
-
-    setGroups(allGroups);
-  };
-
-  const checkHandler = (kanaType, group) => {
-    const afterSelection = cloneDeep(groups);
-    afterSelection[kanaType][group].selected = !afterSelection[kanaType][group]
-      .selected;
-    setGroups(afterSelection);
-  };
 
   const quizStartHandler = () => {
     //todo: add a check if atleast one group is selected to continue
 
-    setQuizOn(true);
-    history.push('/quiz');
+    console.log(state);
+
+    // history.push('/quiz');
   };
 
   //testing purposes only, remove it later
@@ -73,8 +49,6 @@ const SelectionScreen = () => {
           {Object.keys(groups).map((kanaType) => {
             return (
               <SelectorsContainer
-                checkOne={checkHandler}
-                bundleSelect={bundleSelectHandler}
                 key={kanaType}
                 groupName={kanaType}
                 items={groups[kanaType]}

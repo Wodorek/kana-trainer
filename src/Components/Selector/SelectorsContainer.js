@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useStore } from '../../shared/context/store';
 
 import GroupSelector from './GroupSelector';
 
@@ -41,7 +42,9 @@ const SelectorsContainer = (props) => {
 
   const itemsIterable = Object.keys(props.items);
 
-  const { items, groupName, checkOne, bundleSelect } = props;
+  const { state, dispatch } = useStore();
+
+  const { items, groupName, select, bundleSelect } = props;
 
   return (
     <StyledContainer>
@@ -50,20 +53,26 @@ const SelectorsContainer = (props) => {
         {itemsIterable.map((group) => {
           return (
             <GroupSelector
+              group={group}
               key={group}
               groupNameKana={Object.keys(items[group].characters)[0]}
               groupNameRomaji={Object.values(group).slice(0, -7)}
-              select={() => checkOne(groupName, group)}
-              selected={items[group].selected}
+              select={() => select(groupName, group)}
             />
           );
         })}
       </StyledElements>
       <StyledButtonsGroup className="scButtons">
-        <StyledButton onClick={() => bundleSelect(groupName, true)}>
+        <StyledButton
+          onClick={() => dispatch({ type: 'addAll', payload: itemsIterable })}
+        >
           Check All
         </StyledButton>
-        <StyledButton onClick={() => bundleSelect(groupName, false)}>
+        <StyledButton
+          onClick={() =>
+            dispatch({ type: 'removeAll', payload: itemsIterable })
+          }
+        >
           Uncheck All
         </StyledButton>
       </StyledButtonsGroup>

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useStore } from '../../shared/context/store';
 
 const SelectorCard = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const SelectorCard = styled.div`
   color: white;
   background-color: dimgrey;
   transition: 0.4s;
-  transform: ${(props) => (props.selected ? 'rotate(20deg)' : '')};
+  transform: ${(state) => (state.selected ? 'rotate(20deg)' : '')};
 `;
 
 const CardText = styled.p`
@@ -23,9 +24,22 @@ const CardText = styled.p`
 `;
 
 const GroupSelector = (props) => {
-  const { select, selected, groupNameKana, groupNameRomaji } = props;
+  const { state, dispatch } = useStore();
+
+  const { group, groupNameKana, groupNameRomaji } = props;
+
+  const selected = state.selectedGroups.includes(group);
+
+  const singleSelectionHandler = () => {
+    if (selected === false) {
+      dispatch({ type: 'addGroup', payload: group });
+    } else {
+      dispatch({ type: 'removeGroup', payload: group });
+    }
+  };
+
   return (
-    <SelectorCard onClick={select} selected={selected}>
+    <SelectorCard onClick={singleSelectionHandler} selected={selected}>
       <CardText>{selected ? groupNameRomaji : groupNameKana}</CardText>
     </SelectorCard>
   );
