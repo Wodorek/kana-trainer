@@ -1,42 +1,73 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import GroupSelector from './GroupSelector';
-import './SelectorsContainer.css';
+
+const StyledContainer = styled.div`
+  margin-top: 1rem;
+  justify-content: space-around;
+  width: 40vw;
+`;
+
+const StyledElements = styled.div`
+  gap: 1rem;
+  justify-content: left;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const StyledHeading = styled.h1`
+  font-weight: 500;
+  text-align: center;
+  font-size: 3rem;
+`;
+
+const StyledButtonsGroup = styled.div`
+  margin-top: 1rem;
+  height: auto;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const StyledButton = styled.button`
+  margin-top: 2rem;
+  font-size: 2rem;
+  border-radius: 0.5rem;
+`;
 
 const SelectorsContainer = (props) => {
   //consider iterating over items with lodash functions
+  //TODO put buttons in their own component
 
   const itemsIterable = Object.keys(props.items);
 
-  const mappable = new Map(Object.values(props.items));
-
-  console.log(mappable);
+  const { items, groupName, checkOne, bundleSelect } = props;
 
   return (
-    <div className="selectorsContainer">
-      <h1>{props.groupName}</h1>
-      <div className="selectorElements">
+    <StyledContainer>
+      <StyledHeading>{props.groupName}</StyledHeading>
+      <StyledElements>
         {itemsIterable.map((group) => {
           return (
             <GroupSelector
               key={group}
-              groupNameKana={Object.keys(props.items[group].characters)[0]}
+              groupNameKana={Object.keys(items[group].characters)[0]}
               groupNameRomaji={Object.values(group).slice(0, -7)}
-              select={() => props.checkOne(props.groupName, group)}
-              selected={props.items[group].selected}
+              select={() => checkOne(groupName, group)}
+              selected={items[group].selected}
             />
           );
         })}
-      </div>
-      <div className="scButtons">
-        <button onClick={() => props.bundleSelect(props.groupName, true)}>
+      </StyledElements>
+      <StyledButtonsGroup className="scButtons">
+        <StyledButton onClick={() => bundleSelect(groupName, true)}>
           Check All
-        </button>
-        <button onClick={() => props.bundleSelect(props.groupName, false)}>
+        </StyledButton>
+        <StyledButton onClick={() => bundleSelect(groupName, false)}>
           Uncheck All
-        </button>
-      </div>
-    </div>
+        </StyledButton>
+      </StyledButtonsGroup>
+    </StyledContainer>
   );
 };
 
