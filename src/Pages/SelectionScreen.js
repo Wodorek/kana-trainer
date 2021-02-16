@@ -1,51 +1,78 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
 
 import { dictionary } from '../InternalData/dictionary';
 import SelectorsContainer from '../Components/Selector/SelectorsContainer';
 import { useStore } from '../shared/context/store';
-import './SelectionScreen.css';
+
+const load = keyframes`
+  0% {
+    width: 0
+  }
+  100%
+  {
+    width: 100%
+  }
+`;
+
+const StyledMessage = styled.p`
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 6rem;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  -webkit-text-fill-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  &::before {
+    content: '少々お待ち下さい';
+    position: absolute;
+    -webkit-text-fill-color: black;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: blue;
+    overflow: hidden;
+    animation: ${load} 2s linear infinite;
+  }
+`;
+
+const StyledScreen = styled.div`
+  display: flex;
+  column-count: 2;
+  justify-content: space-around;
+`;
 
 const SelectionScreen = () => {
   const [groups, setGroups] = useState();
 
-  const { state, dispatch } = useStore();
+  const { dispatch } = useStore();
 
   const history = useHistory();
 
   useEffect(() => {
-    setGroups(dictionary);
+    setTimeout(() => {
+      setGroups(dictionary);
+    }, 100);
   }, []);
 
   const quizStartHandler = () => {
-    //todo: add a check if atleast one group is selected to continue
-
-    console.log(state);
-
-    // history.push('/quiz');
+    dispatch({ type: 'startQuiz' });
+    history.push('/quiz');
   };
-
-  //testing purposes only, remove it later
-  // const showSelectedHandler = () => {
-  //   const selected = [];
-  //   for (let kana in groups) {
-  //     for (let group in groups[kana]) {
-  //       if (groups[kana][group].selected === true) {
-  //         selected.push(group);
-  //       }
-  //     }
-  //   }
-  //   setSelectedGroup([...selected]);
-  // };
 
   let content;
 
   if (!groups) {
-    content = <p className="loadingMessage">お待ち下さい</p>;
+    content = <StyledMessage>少々お待ち下さい</StyledMessage>;
   } else {
     content = (
       <>
-        <div className="selectionScreen">
+        <StyledScreen>
           {Object.keys(groups).map((kanaType) => {
             return (
               <SelectorsContainer
@@ -55,7 +82,7 @@ const SelectionScreen = () => {
               />
             );
           })}
-        </div>
+        </StyledScreen>
         <button onClick={quizStartHandler}>Start</button>
       </>
     );

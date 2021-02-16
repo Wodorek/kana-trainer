@@ -1,7 +1,15 @@
 import React, { createContext, useContext, useReducer } from 'react';
 
+//split that into two (or more) reducers ?
+
 const QuizContext = createContext();
-const initialState = { selectedGroups: [], quizOn: false };
+
+const initialState = {
+  selectedGroups: [],
+  quizOn: false,
+  totalQuestions: 0,
+  questionsCorrect: 0,
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -9,6 +17,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         quizOn: true,
+      };
+    case 'endQuiz':
+      return {
+        ...state,
+        quizOn: false,
       };
     case 'addGroup':
       return {
@@ -33,9 +46,16 @@ const reducer = (state, action) => {
         return !action.payload.includes(group);
       });
       return { ...state, selectedGroups: [...emptyGroups] };
+    case 'setTotalQuestions':
+      return { ...state, totalQuestions: action.payload };
+    case 'questionCorrect':
+      return {
+        ...state,
+        questionsCorrect: state.questionsCorrect + 1,
+      };
 
     default:
-      throw new Error(`Action type not supported: ${action.type}`);
+      return state;
   }
 };
 

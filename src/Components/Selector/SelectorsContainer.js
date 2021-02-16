@@ -42,9 +42,9 @@ const SelectorsContainer = (props) => {
 
   const itemsIterable = Object.keys(props.items);
 
-  const { state, dispatch } = useStore();
+  const { dispatch } = useStore();
 
-  const { items, groupName, select, bundleSelect } = props;
+  const { items, groupName, select } = props;
 
   return (
     <StyledContainer>
