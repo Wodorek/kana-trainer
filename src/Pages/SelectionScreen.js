@@ -5,6 +5,8 @@ import styled, { keyframes } from 'styled-components';
 import { dictionary } from '../InternalData/dictionary';
 import SelectorsContainer from '../Components/Selector/SelectorsContainer';
 import { useStore } from '../shared/context/store';
+import HelpMessageBox from '../Components/HelpMessageBox';
+import Button from '../shared/UIElements/Button';
 
 const load = keyframes`
   0% {
@@ -55,9 +57,7 @@ const SelectionScreen = () => {
   const history = useHistory();
 
   useEffect(() => {
-    setTimeout(() => {
-      setGroups(dictionary);
-    }, 100);
+    setGroups(dictionary);
   }, []);
 
   const quizStartHandler = () => {
@@ -73,6 +73,7 @@ const SelectionScreen = () => {
     content = (
       <>
         <StyledScreen>
+          <HelpMessageBox />
           {Object.keys(groups).map((kanaType) => {
             return (
               <SelectorsContainer
@@ -83,7 +84,9 @@ const SelectionScreen = () => {
             );
           })}
         </StyledScreen>
-        <button onClick={quizStartHandler}>Start</button>
+        <Button start onClick={quizStartHandler}>
+          Start
+        </Button>
       </>
     );
   }

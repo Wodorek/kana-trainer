@@ -1,9 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStore } from '../shared/context/store';
+import RedirectingScreen from '../shared/UIElements/RedirectingScreen';
 
-const StyledScoreScreen = styled.div`
+const StyledScorePage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,8 +23,6 @@ const StyledButton = styled.button`
 const Score = () => {
   const { state } = useStore();
 
-  const history = useHistory();
-
   const { totalQuestions, questionsCorrect } = state;
 
   const calculatePercentage = () => {
@@ -40,16 +38,19 @@ const Score = () => {
 
   if (totalQuestions > 0) {
     content = (
-      <StyledScoreScreen>
+      <StyledScorePage>
         <StyledScoreMessage>{`You got ${calculatePercentage()} % (${questionsCorrect} out of ${totalQuestions}) correct!`}</StyledScoreMessage>
         <StyledButton>Hello</StyledButton>
-      </StyledScoreScreen>
+      </StyledScorePage>
     );
   } else {
-    content = <p>s</p>;
-    setTimeout(() => {
-      history.goBack();
-    }, 3000);
+    content = (
+      <RedirectingScreen
+        redirectTime={3}
+        RedirectTo={'/'}
+        message={'No score to show! Select the groups, and take the quiz'}
+      />
+    );
   }
 
   return content;

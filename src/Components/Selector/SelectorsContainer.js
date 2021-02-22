@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useStore } from '../../shared/context/store';
 
+import Button from '../../shared/UIElements/Button';
 import GroupSelector from './GroupSelector';
 
 const StyledContainer = styled.div`
@@ -18,9 +19,11 @@ const StyledElements = styled.div`
 `;
 
 const StyledHeading = styled.h1`
+  text-transform: capitalize;
   font-weight: 500;
   text-align: center;
   font-size: 3rem;
+  margin-bottom: 2rem;
 `;
 
 const StyledButtonsGroup = styled.div`
@@ -28,12 +31,6 @@ const StyledButtonsGroup = styled.div`
   height: auto;
   display: flex;
   justify-content: space-around;
-`;
-
-const StyledButton = styled.button`
-  margin-top: 2rem;
-  font-size: 2rem;
-  border-radius: 0.5rem;
 `;
 
 const SelectorsContainer = (props) => {
@@ -46,6 +43,12 @@ const SelectorsContainer = (props) => {
 
   const { items, groupName, select } = props;
 
+  //I don't think this function can justify its existence
+
+  // const BulkSelectionHandler = (type, payload) => {
+  //   dispatch({type: type, payload: payload})
+  // }
+
   return (
     <StyledContainer>
       <StyledHeading>{props.groupName}</StyledHeading>
@@ -56,25 +59,25 @@ const SelectorsContainer = (props) => {
               group={group}
               key={group}
               groupNameKana={Object.keys(items[group].characters)[0]}
-              groupNameRomaji={Object.values(group).slice(0, -7)}
+              // groupNameRomaji={Object.values(group).slice(0, -7)}
               select={() => select(groupName, group)}
             />
           );
         })}
       </StyledElements>
       <StyledButtonsGroup className="scButtons">
-        <StyledButton
+        <Button
           onClick={() => dispatch({ type: 'addAll', payload: itemsIterable })}
         >
-          Check All
-        </StyledButton>
-        <StyledButton
+          Select All
+        </Button>
+        <Button
           onClick={() =>
             dispatch({ type: 'removeAll', payload: itemsIterable })
           }
         >
-          Uncheck All
-        </StyledButton>
+          Deselect All
+        </Button>
       </StyledButtonsGroup>
     </StyledContainer>
   );

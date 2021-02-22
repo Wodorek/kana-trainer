@@ -6,6 +6,7 @@ import { dictionary } from '../InternalData/dictionary';
 import Question from '../Components/Question/Question';
 import styled from 'styled-components';
 import shuffle from 'lodash.shuffle';
+import RedirectingScreen from '../shared/UIElements/RedirectingScreen';
 
 const StyledContainer = styled.div`
   width: 90%;
@@ -111,11 +112,12 @@ const Quiz = () => {
     );
   } else {
     content = (
-      <p>Please Select some kanas and click "start" to start the quiz!</p>
+      <RedirectingScreen
+        message={'Please select some groups and press start!'}
+        redirectTime={3}
+        redirectTo={'/'}
+      ></RedirectingScreen>
     );
-    setTimeout(() => {
-      history.goBack();
-    }, 3000);
   }
 
   return content;
