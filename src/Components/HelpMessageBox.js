@@ -42,15 +42,13 @@ const HelpMessageBox = () => {
 
   const toggleHoverState = (state) => {
     if (state === true) {
-      console.log(state);
       setIsHovering(state);
       clearTimeout(timeoutId);
     }
     if (state === false) {
-      console.log(state);
       timeoutId = setTimeout(() => {
         setIsHovering(state);
-      }, 300);
+      }, 200);
     }
   };
 
@@ -70,11 +68,12 @@ const HelpMessageBox = () => {
             <StyledText>
               Select groups of Hiragana or Katakana (or both!) that you want to
               quiz yourself on, and press start. You will see a shuffled grid of
-              all syllables from selected groups. Be careful, you'll get only
-              one chance to input an answer into a box in each card! After all
-              cards are completed you will see how well you've done overall.
-            </StyledText>
-            <StyledText>
+              all syllables from selected groups. Type in Romaji for each
+              syllable, and press enter to submit<br></br> Be careful, you'll
+              get only one chance to input an answer into a box in each card!
+              After all cards are completed you will see how well you've done
+              overall.
+              <br></br>
               You can read more on japanese writing system:{' '}
               <a
                 target="_blank"

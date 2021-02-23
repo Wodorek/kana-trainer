@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { useStore } from '../shared/context/store';
 import { dictionary } from '../InternalData/dictionary';
@@ -16,6 +16,9 @@ const StyledContainer = styled.div`
   align-items: center;
   align-content: center;
   gap: 1rem;
+  @media (max-width: 420px) {
+    transform: scale(0.9);
+  }
 `;
 
 const Quiz = () => {
@@ -24,8 +27,6 @@ const Quiz = () => {
   const [questions, setQuestions] = useState([]);
 
   const [completedQuestions, setCompletedQuestions] = useState(0);
-
-  const history = useHistory();
 
   // const cardRef = useRef(null);
 

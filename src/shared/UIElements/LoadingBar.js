@@ -11,7 +11,7 @@ const StyledLoadingContainer = styled.div`
   background: white;
   border: 2px solid ${(props) => props.theme.blue.colors.primary};
   justify-content: flex-start;
-  border-radius: 2rem;
+  border-radius: 0.5rem;
   align-items: center;
   position: relative;
   padding: 0 0.5rem;
@@ -26,15 +26,13 @@ const StyledLoadingBar = styled.div`
   animation: ${load} normal forwards;
   animation-duration: ${(props) => props.redirectTime}s;
   animation-timing-function: linear;
-  border-radius: 2rem;
+  border-radius: 0.5rem;
   background: ${(props) => props.theme.blue.colors.primary};
   height: 1.5rem;
   width: 20;
 `;
 const StyledLoadingText = styled.p`
   margin-left: 1rem;
-  align-self: center;
-  display: flex;
   color: white;
 `;
 

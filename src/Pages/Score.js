@@ -47,7 +47,7 @@ const Score = () => {
     content = (
       <RedirectingScreen
         redirectTime={3}
-        RedirectTo={'/'}
+        redirectTo={'/'}
         message={'No score to show! Select the groups, and take the quiz'}
       />
     );

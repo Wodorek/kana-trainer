@@ -3,7 +3,9 @@ import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import LoadingBar from './LoadingBar';
 
-const StyledMessage = styled.p``;
+const StyledMessage = styled.p`
+  font-size: 2rem;
+`;
 
 const RedirectingScreen = (props) => {
   const [redirect, setRedirect] = useState(false);
@@ -19,10 +21,10 @@ const RedirectingScreen = (props) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setRedirect(true);
-      return function cleanup() {
-        clearTimeout(timeoutId);
-      };
     }, redirectTime * 1000);
+    return function cleanup() {
+      clearTimeout(timeoutId);
+    };
   });
 
   return (

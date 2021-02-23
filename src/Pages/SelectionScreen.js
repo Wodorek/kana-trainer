@@ -84,9 +84,18 @@ const SelectionScreen = () => {
             );
           })}
         </StyledScreen>
-        <Button start onClick={quizStartHandler}>
-          Start
-        </Button>
+        <div
+          style={{
+            justifyContent: 'center',
+            display: 'flex',
+            marginTop: '1rem',
+            paddingBottom: '2rem',
+          }}
+        >
+          <Button start onClick={quizStartHandler}>
+            Start
+          </Button>
+        </div>
       </>
     );
   }

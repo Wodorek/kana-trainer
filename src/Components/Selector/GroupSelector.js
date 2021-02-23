@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useStore } from '../../shared/context/store';
 
 const SelectorCard = styled.div`
-  /* box-shadow: 0px 0px 3px ${(props) => props.theme.blue.colors.primary}; */
   border: solid 5px ${(props) => props.theme.blue.colors.primary};
   display: flex;
   margin: auto;

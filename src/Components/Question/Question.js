@@ -3,14 +3,18 @@ import styled from 'styled-components';
 import { useStore } from '../../shared/context/store';
 
 const StyledQuestion = styled.div`
+  --height: 15rem;
+  --width: 11rem;
+  --font-size: 3rem;
+  --percentage: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   margin: auto;
-  height: 15rem;
-  width: 11rem;
-  font-size: 3rem;
+  height: calc(var(--height) * var(--percentage));
+  width: calc(var(--width) * var(--percentage));
+  font-size: calc(var(--font-size) * var(--percentage));
   border-radius: 0.7rem;
   color: white;
 
@@ -24,11 +28,16 @@ const StyledQuestion = styled.div`
       return props.theme.blue.colors.incorrect;
     }
   }};
+  @media (max-width: 640px) {
+    --percentage: 0.6;
+  }
 `;
 
 const StyledCardText = styled.p`
+  --font-size: 5rem;
+  --percentage: 1;
   margin-top: 0.5rem;
-  font-size: 5rem;
+  font-size: calc(var(--font-size) * var(--percentage));
   display: flex;
   justify-content: center;
   width: inherit;
@@ -36,19 +45,28 @@ const StyledCardText = styled.p`
   ::selection {
     text-decoration: none;
   }
+  @media (max-width: 640px) {
+    --percentage: 0.6;
+  }
 `;
 
 const StyledInput = styled.input`
+  --height: 3.5rem;
+  --width: 7.5rem;
+  --percentage: 1;
   text-align: center;
   border-radius: 0.3rem;
   margin-bottom: 1.5rem;
   border: none;
   display: flex;
   justify-self: center;
-  width: 7.5rem;
-  height: 3.5rem;
+  height: calc(var(--height) * var(--percentage));
+  width: calc(var(--width) * var(--percentage));
   :focus {
     outline: none;
+  }
+  @media (max-width: 640px) {
+    --percentage: 0.6;
   }
 `;
 
@@ -77,13 +95,12 @@ const Question = (props) => {
     return nextQuestion;
   };
 
-  const focusNextInput = () => {
+  const focusInput = () => {
     //todo focus on the first active item
     //all items done? call finishQuiz()
 
     //todo this should be handled with refs later
     const nextQuestion = getNextQuestion(props.index);
-
     if (nextQuestion === null) {
       finishQuiz();
     } else {
@@ -109,7 +126,7 @@ const Question = (props) => {
       setDisabled(true);
 
       props.completeQuestion();
-      focusNextInput();
+      focusInput();
     }
   };
 
