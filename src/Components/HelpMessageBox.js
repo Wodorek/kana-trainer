@@ -8,7 +8,7 @@ const StyledIcon = styled(QuestionCircle)`
   position: absolute;
   height: 3rem;
   width: auto;
-  color: ${(props) => props.theme.blue.colors.primary};
+  color: ${(props) => props.theme.primary};
 `;
 
 const StyledText = styled.p`
@@ -22,7 +22,7 @@ const StyledMessageBox = styled.div`
   position: absolute;
   right: 6rem;
   top: 5rem;
-  background-color: ${(props) => props.theme.blue.colors.primary};
+  background-color: ${(props) => props.theme.primary};
   box-shadow: 4px 4px 8px black;
   max-width: 30rem;
   width: auto;

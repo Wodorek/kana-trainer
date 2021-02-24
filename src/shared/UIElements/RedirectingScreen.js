@@ -5,12 +5,27 @@ import LoadingBar from './LoadingBar';
 
 const StyledMessage = styled.p`
   font-size: 2rem;
+  text-align: center;
+  @media (max-width: 420px) {
+    font-size: 1.4rem;
+    margin: 0 0.5rem 0 0.5rem;
+  }
+`;
+
+const StyledContainer = styled.div`
+  margin: auto;
+  gap: 4rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const RedirectingScreen = (props) => {
   const [redirect, setRedirect] = useState(false);
 
-  const { message, redirectTime, redirectTo } = props;
+  const { redirectTime, redirectTo, children } = props;
 
   let redirector;
 
@@ -28,13 +43,13 @@ const RedirectingScreen = (props) => {
   });
 
   return (
-    <>
-      <StyledMessage redirectTime={`${redirectTime}s`} text={message}>
-        {message}
+    <StyledContainer>
+      <StyledMessage redirectTime={`${redirectTime}s`}>
+        {children}
       </StyledMessage>
       <LoadingBar redirectTime={redirectTime} />
       {redirector}
-    </>
+    </StyledContainer>
   );
 };
 

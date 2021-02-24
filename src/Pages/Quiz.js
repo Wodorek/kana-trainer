@@ -16,9 +16,6 @@ const StyledContainer = styled.div`
   align-items: center;
   align-content: center;
   gap: 1rem;
-  @media (max-width: 420px) {
-    transform: scale(0.9);
-  }
 `;
 
 const Quiz = () => {
@@ -113,11 +110,9 @@ const Quiz = () => {
     );
   } else {
     content = (
-      <RedirectingScreen
-        message={'Please select some groups and press start!'}
-        redirectTime={3}
-        redirectTo={'/'}
-      ></RedirectingScreen>
+      <RedirectingScreen redirectTime={300} redirectTo={'/'}>
+        Please select some groups and press start!
+      </RedirectingScreen>
     );
   }
 

@@ -2,14 +2,14 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const load = keyframes`
-0% { width: 20%; }
+0% { width: ${visualViewport.width < 420 ? '37%' : '20%'}; }
   100% { width: 100%; }
 }
 `;
 
 const StyledLoadingContainer = styled.div`
   background: white;
-  border: 2px solid ${(props) => props.theme.blue.colors.primary};
+  border: 2px solid ${(props) => props.theme.primary};
   justify-content: flex-start;
   border-radius: 0.5rem;
   align-items: center;
@@ -18,6 +18,9 @@ const StyledLoadingContainer = styled.div`
   display: flex;
   height: 2.5rem;
   width: 45rem;
+  @media (max-width: 420px) {
+    width: 20rem;
+  }
 `;
 
 const StyledLoadingBar = styled.div`
@@ -27,9 +30,11 @@ const StyledLoadingBar = styled.div`
   animation-duration: ${(props) => props.redirectTime}s;
   animation-timing-function: linear;
   border-radius: 0.5rem;
-  background: ${(props) => props.theme.blue.colors.primary};
+  background: ${(props) => props.theme.primary};
   height: 1.5rem;
-  width: 20;
+  @media (max-width: 420px) {
+    width: 20rem;
+  }
 `;
 const StyledLoadingText = styled.p`
   margin-left: 1rem;

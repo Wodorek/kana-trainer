@@ -27,7 +27,7 @@ const StyledHeading = styled.h1`
 `;
 
 const StyledButtonsGroup = styled.div`
-  margin-top: 1rem;
+  margin-top: 2rem;
   height: auto;
   display: flex;
   justify-content: space-around;

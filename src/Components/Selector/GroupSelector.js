@@ -3,17 +3,16 @@ import styled from 'styled-components';
 import { useStore } from '../../shared/context/store';
 
 const SelectorCard = styled.div`
-  border: solid 5px ${(props) => props.theme.blue.colors.primary};
+  border: solid 5px ${(props) => props.theme.primary};
   display: flex;
   margin: auto;
   height: 9rem;
   width: 6rem;
   font-size: 2.5rem;
   border-radius: 1rem;
-  color: ${(props) =>
-    props.selected ? 'white' : props.theme.blue.colors.primary};
+  color: ${(props) => (props.selected ? 'white' : props.theme.primary)};
   background-color: ${(props) =>
-    props.selected ? props.theme.blue.colors.primary : `white`};
+    props.selected ? props.theme.primary : `white`};
   transition: 0.5s;
   transform: ${(props) => (props.selected ? 'rotateY(180deg)' : '')};
 `;

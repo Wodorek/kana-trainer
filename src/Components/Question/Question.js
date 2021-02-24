@@ -20,12 +20,12 @@ const StyledQuestion = styled.div`
 
   background-color: ${(props) => {
     if (props.correct === null) {
-      return props.theme.blue.colors.primary;
+      return props.theme.primary;
     }
     if (props.correct === true) {
-      return props.theme.blue.colors.correct;
+      return props.theme.correct;
     } else {
-      return props.theme.blue.colors.incorrect;
+      return props.theme.incorrect;
     }
   }};
   @media (max-width: 640px) {
@@ -82,7 +82,6 @@ const Question = (props) => {
   };
 
   const getNextQuestion = (index) => {
-    //end on last
     const nextQuestion = document.getElementById(index + 1);
 
     if (nextQuestion && nextQuestion.disabled) {
@@ -96,9 +95,6 @@ const Question = (props) => {
   };
 
   const focusInput = () => {
-    //todo focus on the first active item
-    //all items done? call finishQuiz()
-
     //todo this should be handled with refs later
     const nextQuestion = getNextQuestion(props.index);
     if (nextQuestion === null) {
