@@ -129,6 +129,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSetTotalQuestions: (payload) =>
       dispatch({ type: 'quiz/setTotalQuestions', payload: payload }),
+    onSetUpQuestions: (payload) => dispatch({ type: 'quiz/setUpQuestions' }),
   };
 };
 
