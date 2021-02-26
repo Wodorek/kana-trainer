@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import LoadingBar from './LoadingBar';
 
@@ -23,24 +23,36 @@ const StyledContainer = styled.div`
 `;
 
 const RedirectingScreen = (props) => {
-  const [redirect, setRedirect] = useState(false);
+  // const [redirect, setRedirect] = useState(false);
 
-  const { redirectTime, redirectTo, children } = props;
+  const history = useHistory();
 
-  let redirector;
+  const { redirectTime, children } = props;
 
-  if (redirect) {
-    redirector = <Redirect to={redirectTo} />;
-  }
+  // let redirector;
+
+  // if (redirect) {
+  //   redirector = <Redirect to={`/kana-trainer${redirectTo}`} />;
+  // }
+
+  // useEffect(() => {
+  //   const timeoutId = setTimeout(() => {
+  //     setRedirect(true);
+  //   }, redirectTime * 1000);
+  //   return function cleanup() {
+  //     clearTimeout(timeoutId);
+  //   };
+  // });
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setRedirect(true);
+      history.goBack();
+      // setRedirect(true);
     }, redirectTime * 1000);
     return function cleanup() {
       clearTimeout(timeoutId);
     };
-  });
+  }, [history, redirectTime]);
 
   return (
     <StyledContainer>
@@ -48,7 +60,7 @@ const RedirectingScreen = (props) => {
         {children}
       </StyledMessage>
       <LoadingBar redirectTime={redirectTime} />
-      {redirector}
+      {/* {redirector} */}
     </StyledContainer>
   );
 };

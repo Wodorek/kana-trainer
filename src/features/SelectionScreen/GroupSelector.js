@@ -1,6 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { useStore } from '../../shared/context/store';
 
 const SelectorCard = styled.div`
   border: solid 5px ${(props) => props.theme.primary};
@@ -28,17 +28,21 @@ const CardText = styled.p`
 `;
 
 const GroupSelector = (props) => {
-  const { state, dispatch } = useStore();
+  const {
+    selectedGroups,
+    group,
+    groupNameKana,
+    onAddGroup,
+    onRemoveGroup,
+  } = props;
 
-  const { group, groupNameKana } = props;
-
-  const selected = state.selectedGroups.includes(group);
+  const selected = selectedGroups.includes(group);
 
   const singleSelectionHandler = () => {
     if (selected === false) {
-      dispatch({ type: 'addGroup', payload: group });
+      onAddGroup(group);
     } else {
-      dispatch({ type: 'removeGroup', payload: group });
+      onRemoveGroup(group);
     }
   };
 
@@ -49,4 +53,19 @@ const GroupSelector = (props) => {
   );
 };
 
-export default GroupSelector;
+const mapStateToProps = (state) => {
+  return {
+    selectedGroups: state.selection.selectedGroups,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddGroup: (payload) =>
+      dispatch({ type: 'selection/addGroup', payload: payload }),
+    onRemoveGroup: (payload) =>
+      dispatch({ type: 'selection/removeGroup', payload: payload }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupSelector);

@@ -1,8 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { useStore } from '../../shared/context/store';
 
-import Button from '../../shared/UIElements/Button';
+import Button from '../../common/UIElements/Button';
 import GroupSelector from './GroupSelector';
 
 const StyledContainer = styled.div`
@@ -35,23 +35,14 @@ const StyledButtonsGroup = styled.div`
 
 const SelectorsContainer = (props) => {
   //consider iterating over items with lodash functions
-  //TODO put buttons in their own component
 
   const itemsIterable = Object.keys(props.items);
 
-  const { dispatch } = useStore();
-
-  const { items, groupName, select } = props;
-
-  //I don't think this function can justify its existence
-
-  // const BulkSelectionHandler = (type, payload) => {
-  //   dispatch({type: type, payload: payload})
-  // }
+  const { items, groupName, select, onAddAll, onRemoveAll } = props;
 
   return (
     <StyledContainer>
-      <StyledHeading>{props.groupName}</StyledHeading>
+      <StyledHeading>{groupName}</StyledHeading>
       <StyledElements>
         {itemsIterable.map((group) => {
           return (
@@ -66,21 +57,20 @@ const SelectorsContainer = (props) => {
         })}
       </StyledElements>
       <StyledButtonsGroup className="scButtons">
-        <Button
-          onClick={() => dispatch({ type: 'addAll', payload: itemsIterable })}
-        >
-          Select All
-        </Button>
-        <Button
-          onClick={() =>
-            dispatch({ type: 'removeAll', payload: itemsIterable })
-          }
-        >
-          Deselect All
-        </Button>
+        <Button onClick={() => onAddAll(itemsIterable)}>Select All</Button>
+        <Button onClick={() => onRemoveAll(itemsIterable)}>Deselect All</Button>
       </StyledButtonsGroup>
     </StyledContainer>
   );
 };
 
-export default SelectorsContainer;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddAll: (payload) =>
+      dispatch({ type: 'selection/addAll', payload: payload }),
+    onRemoveAll: (payload) =>
+      dispatch({ type: 'selection/removeAll', payload: payload }),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(SelectorsContainer);

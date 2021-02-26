@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { useStore } from '../shared/context/store';
-import { dictionary } from '../InternalData/dictionary';
-import Question from '../Components/Question/Question';
+import { dictionary } from '../../common/dictionary';
+import Question from './Question';
 import styled from 'styled-components';
 import shuffle from 'lodash.shuffle';
-import RedirectingScreen from '../shared/UIElements/RedirectingScreen';
+import RedirectingScreen from '../RedirectingScreen/RedirectingScreen';
+import { connect } from 'react-redux';
 
 const StyledContainer = styled.div`
   width: 90%;
@@ -18,27 +18,25 @@ const StyledContainer = styled.div`
   gap: 1rem;
 `;
 
-const Quiz = () => {
-  const { state, dispatch } = useStore();
-
+const QuizScreen = (props) => {
   const [questions, setQuestions] = useState([]);
 
   const [completedQuestions, setCompletedQuestions] = useState(0);
 
-  // const cardRef = useRef(null);
-
-  // console.log(dictionary);
+  const { selectedGroups, questionsTotal, quizOn, onSetTotalQuestions } = props;
 
   //I hate how this is done, that whole function is a travesty
   //find out how to change it later
   //I should redo the whole dictionary structure...
+
+  //take this out into reducer?
   const setUpQuestions = useCallback(() => {
     let charactersArrays = [];
     let spread = [];
 
     Object.keys(dictionary).forEach((key) => {
       Object.keys(dictionary[key]).forEach((el) => {
-        if (state.selectedGroups.includes(el)) {
+        if (props.selectedGroups.includes(el)) {
           charactersArrays = [
             ...charactersArrays,
             dictionary[key][el].characters,
@@ -58,20 +56,22 @@ const Quiz = () => {
     });
 
     return spread;
-  }, [state.selectedGroups]);
+  }, [props.selectedGroups]);
 
   //assigns index AFTER shuffle, for focusing
   const setQuestionsIndex = useCallback(
     (arr) => {
+      //doubles as a total questions number
       let itemIndex = 0;
+
       const withAssignedIndex = arr.map((question) => {
         itemIndex++;
         return { ...question, index: itemIndex };
       });
-      dispatch({ type: 'setTotalQuestions', payload: itemIndex });
+      onSetTotalQuestions(itemIndex);
       return withAssignedIndex;
     },
-    [dispatch]
+    [onSetTotalQuestions]
   );
 
   const questionCompleteHandler = () => {
@@ -82,17 +82,15 @@ const Quiz = () => {
     let questions = setUpQuestions();
     questions = shuffle(questions);
     questions = setQuestionsIndex(questions);
-
     setQuestions(questions);
-  }, [setQuestionsIndex, setUpQuestions, state.selectedGroups]);
-
-  console.log(state.questionsCorrect);
+  }, [setQuestionsIndex, setUpQuestions, selectedGroups]);
 
   let content;
 
-  if (state.totalQuestions === completedQuestions && state.totalQuestions > 0) {
-    content = <Redirect to="score" />;
-  } else if (state.quizOn && state.selectedGroups.length > 0 && questions) {
+  if (questionsTotal === completedQuestions && questionsTotal > 0) {
+    console.log('done');
+    content = <Redirect to="/score" />;
+  } else if (quizOn && selectedGroups.length > 0 && questions) {
     content = (
       <StyledContainer>
         {questions.map((question) => {
@@ -110,7 +108,7 @@ const Quiz = () => {
     );
   } else {
     content = (
-      <RedirectingScreen redirectTime={300} redirectTo={'/'}>
+      <RedirectingScreen redirectTime={3}>
         Please select some groups and press start!
       </RedirectingScreen>
     );
@@ -119,4 +117,19 @@ const Quiz = () => {
   return content;
 };
 
-export default Quiz;
+const mapStateToProps = (state) => {
+  return {
+    selectedGroups: state.selection.selectedGroups,
+    questionsTotal: state.quiz.questionsTotal,
+    quizOn: state.selection.quizOn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSetTotalQuestions: (payload) =>
+      dispatch({ type: 'quiz/setTotalQuestions', payload: payload }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizScreen);

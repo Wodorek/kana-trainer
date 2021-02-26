@@ -42,9 +42,11 @@ const StyledLoadingText = styled.p`
 `;
 
 const LoadingBar = (props) => {
+  const { redirectTime } = props;
+
   return (
     <StyledLoadingContainer>
-      <StyledLoadingBar redirectTime={props.redirectTime}>
+      <StyledLoadingBar redirectTime={redirectTime}>
         <StyledLoadingText>Redirecting...</StyledLoadingText>
       </StyledLoadingBar>
     </StyledLoadingContainer>

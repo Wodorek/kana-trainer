@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
-import { dictionary } from '../InternalData/dictionary';
-import SelectorsContainer from '../Components/Selector/SelectorsContainer';
-import { useStore } from '../shared/context/store';
-import HelpMessageBox from '../Components/HelpMessageBox';
-import Button from '../shared/UIElements/Button';
+import { dictionary } from '../../common/dictionary';
+import SelectorsContainer from './SelectorsContainer';
+import HelpMessageBox from './HelpMessageBox';
+import Button from '../../common/UIElements/Button';
+import { connect } from 'react-redux';
 
 const load = keyframes`
   0% {
@@ -49,19 +49,20 @@ const StyledScreen = styled.div`
   justify-content: space-around;
 `;
 
-const SelectionScreen = () => {
+const SelectionScreen = (props) => {
   const [groups, setGroups] = useState();
 
-  const { dispatch } = useStore();
-
   const history = useHistory();
+
+  const { onQuizStart } = props;
 
   useEffect(() => {
     setGroups(dictionary);
   }, []);
 
   const quizStartHandler = () => {
-    dispatch({ type: 'startQuiz' });
+    onQuizStart();
+
     history.push('/quiz');
   };
 
@@ -103,4 +104,10 @@ const SelectionScreen = () => {
   return content;
 };
 
-export default SelectionScreen;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onQuizStart: () => dispatch({ type: 'selection/quizStart' }),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(SelectionScreen);

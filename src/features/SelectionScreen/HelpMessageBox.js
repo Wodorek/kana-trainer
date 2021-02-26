@@ -16,7 +16,7 @@ const StyledText = styled.p`
 `;
 
 const StyledMessageBox = styled.div`
-  /* display: ${(props) => (props.visible ? 'block' : 'none')}; */
+  z-index: 1;
   color: white;
   padding: 1rem;
   position: absolute;
@@ -27,7 +27,7 @@ const StyledMessageBox = styled.div`
   max-width: 30rem;
   width: auto;
   a {
-    color: red;
+    color: ${(props) => props.theme.incorrect};
   }
 `;
 
@@ -69,7 +69,7 @@ const HelpMessageBox = () => {
               Select groups of Hiragana or Katakana (or both!) that you want to
               quiz yourself on, and press start. You will see a shuffled grid of
               all syllables from selected groups. Type in Romaji for each
-              syllable, and press enter to submit<br></br> Be careful, you'll
+              syllable, and press enter to submit.<br></br> Be careful, you'll
               get only one chance to input an answer into a box in each card!
               After all cards are completed you will see how well you've done
               overall.

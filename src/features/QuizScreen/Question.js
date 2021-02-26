@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { useStore } from '../../shared/context/store';
 
 const StyledQuestion = styled.div`
   --height: 15rem;
@@ -75,8 +75,6 @@ const Question = (props) => {
   const [value, setValue] = useState('');
   const [correct, setCorrect] = useState(null);
 
-  const { dispatch } = useStore();
-
   const changeHandler = (event) => {
     setValue(event.target.value);
   };
@@ -97,24 +95,19 @@ const Question = (props) => {
   const focusInput = () => {
     //todo this should be handled with refs later
     const nextQuestion = getNextQuestion(props.index);
-    if (nextQuestion === null) {
-      finishQuiz();
-    } else {
+    if (nextQuestion !== null) {
       nextQuestion.focus();
     }
-  };
-
-  const finishQuiz = () => {
-    console.log('ssss');
   };
 
   //todo, do something to not call it twice on enter
   //(if blur ... else ...)
   const validateQuestionHandler = (event) => {
+    console.log(props.answers);
     event.preventDefault();
     if (value) {
       if (props.answers.includes(value)) {
-        dispatch({ type: 'questionCorrect' });
+        props.onQuestionCorrect();
         setCorrect(true);
       } else {
         setCorrect(false);
@@ -146,4 +139,10 @@ const Question = (props) => {
   );
 };
 
-export default Question;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onQuestionCorrect: () => dispatch({ type: 'quiz/questionCorrect' }),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Question);

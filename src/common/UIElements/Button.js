@@ -8,9 +8,10 @@ const StyledButton = styled.button`
   color: ${(props) => props.theme.primary};
   background: white;
   transition: transform 0.1s;
-  :hover,
   :focus {
     outline: none;
+  }
+  :hover {
     border: 4px solid
       ${(props) => (props.start ? props.theme.correct : 'inherit')};
     background: ${(props) =>
@@ -25,7 +26,7 @@ const Button = (props) => {
   const { onClick, children } = props;
 
   return (
-    //that ternary operator haunts my dreams, but somehow prevents warns
+    //this ternary operator haunts my dreams, but somehow prevents warns
     <StyledButton start={props.start ? 1 : 0} onClick={onClick}>
       {children}
     </StyledButton>
