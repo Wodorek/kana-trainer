@@ -371,44 +371,68 @@ export const dictionary = {
 
 //combined dakuten and combination kana, still on the fence if I should include it
 
-// gya_group: {
-//       ぎゃ: ['gya'],
+//     gya_group: {
+//       characters: {
+//         ぎゃ: ['gya'],
 //       ぎゅ: ['gyu'],
 //       ぎょ: ['gyo'],
+//       }
+
 //     },
 //     ja_group: {
-//       じゃ: ['ja', 'jya'],
+//       characters: {
+// じゃ: ['ja', 'jya'],
 //       じゅ: ['ju', 'jyu'],
 //       じょ: ['jo', 'jyo'],
+//       }
+
 //     },
 //     bya_group: {
-//       びゃ: ['bya'],
+//       characters: {
+//  びゃ: ['bya'],
 //       びゅ: ['byu'],
 //       びょ: ['byo'],
+//       }
+
 //     },
 //     pya_group: {
-//       ぴゃ: ['pya'],
+//       characters: {
+// ぴゃ: ['pya'],
 //       ぴゅ: ['pyu'],
 //       ぴょ: ['pyo'],
+//       }
+
 //     },
 
 // gya_group: {
+//     characters: {
 //       ギャ: ['gya'],
 //       ギュ: ['gyu'],
 //       ギョ: ['gyo'],
+//     }
+
 //     },
 // ja_group: {
+//     characters: {
 //   ジャ: ['ja', 'jya'],
 //   ジュ: ['ju', 'jyu'],
-//   ジョ: ['jo', 'jyo'],
+//   ジョ: ['jo', 'jyo
+//     }
+// '],
 // },
 // bya_group: {
+//     characters: {
 //   ビャ: ['bya'],
 //   ビュ: ['byu'],
 //   ビョ: ['byo'],
+//     }
+
 // },
 // pya_group: {
-//   ピャ: ['pya'],
+//     characters: {
+//        ピャ: ['pya'],
 //   ピュ: ['pyu'],
 //   ピョ: ['pyo'],
+//     }
+
 // },

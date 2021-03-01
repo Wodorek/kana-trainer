@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const load = keyframes`
-0% { width: ${visualViewport.width < 420 ? '37%' : '20%'}; }
+0% { width: 37% }
   100% { width: 100%; }
 }
 `;

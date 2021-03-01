@@ -7,9 +7,10 @@ import styled from 'styled-components';
 import shuffle from 'lodash.shuffle';
 import RedirectingScreen from '../RedirectingScreen/RedirectingScreen';
 import { connect } from 'react-redux';
+import ProgressBar from './ProgressBar';
 
 const StyledContainer = styled.div`
-  width: 90%;
+  width: 95%;
   display: flex;
   flex-wrap: wrap;
   margin: 2rem auto;
@@ -88,7 +89,6 @@ const QuizScreen = (props) => {
   let content;
 
   if (questionsTotal === completedQuestions && questionsTotal > 0) {
-    console.log('done');
     content = <Redirect to="/score" />;
   } else if (quizOn && selectedGroups.length > 0 && questions) {
     content = (
@@ -108,13 +108,18 @@ const QuizScreen = (props) => {
     );
   } else {
     content = (
-      <RedirectingScreen redirectTime={3}>
+      <RedirectingScreen redirectTime={3} redirectTo={'/'}>
         Please select some groups and press start!
       </RedirectingScreen>
     );
   }
 
-  return content;
+  return (
+    <>
+      <ProgressBar current={completedQuestions} total={questionsTotal} />
+      {content}
+    </>
+  );
 };
 
 const mapStateToProps = (state) => {

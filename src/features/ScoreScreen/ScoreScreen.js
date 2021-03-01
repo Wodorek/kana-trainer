@@ -25,8 +25,6 @@ const Score = (props) => {
 
   const { questionsTotal, questionsCorrect, onReset } = props;
 
-  console.log(questionsTotal, questionsCorrect);
-
   const calculatePercentage = () => {
     const denominator = questionsTotal;
     const numerator = questionsCorrect;
@@ -53,7 +51,7 @@ const Score = (props) => {
   } else {
     content = (
       // <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
-      <RedirectingScreen redirectTime={3}>
+      <RedirectingScreen redirectTime={3} redirectTo={'/'}>
         No score to show! Select some groups, and press start to take the quiz
       </RedirectingScreen>
     );

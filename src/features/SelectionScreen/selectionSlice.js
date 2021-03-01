@@ -18,10 +18,12 @@ const selectionSlice = createSlice({
       });
     },
     addAll: (state, action) => {
-      const fullGroups = action.payload.filter((group) => {
-        return !state.selectedGroups.includes(group);
+      console.log(action.payload);
+      action.payload.forEach((el) => {
+        if (!state.selectedGroups.includes(el)) {
+          state.selectedGroups.push(el);
+        }
       });
-      return (state = fullGroups);
     },
     removeAll: (state, action) => {
       state.selectedGroups = state.selectedGroups.filter((group) => {
@@ -37,6 +39,6 @@ const selectionSlice = createSlice({
 
 const { actions, reducer } = selectionSlice;
 
-export const { addGroup, removeGroup, addAll, quizStart } = actions;
+export const { addGroup, removeGroup, addAll, quizStart, reset } = actions;
 
 export default reducer;

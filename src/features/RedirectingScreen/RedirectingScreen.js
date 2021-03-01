@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import ScrollToTop from '../../common/Util/ScrollToTop';
 import LoadingBar from './LoadingBar';
 
 const StyledMessage = styled.p`
@@ -23,36 +24,27 @@ const StyledContainer = styled.div`
 `;
 
 const RedirectingScreen = (props) => {
-  // const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   const history = useHistory();
 
-  const { redirectTime, children } = props;
+  const { redirectTime, children, redirectTo } = props;
 
-  // let redirector;
+  let redirector;
 
-  // if (redirect) {
-  //   redirector = <Redirect to={`/kana-trainer${redirectTo}`} />;
-  // }
-
-  // useEffect(() => {
-  //   const timeoutId = setTimeout(() => {
-  //     setRedirect(true);
-  //   }, redirectTime * 1000);
-  //   return function cleanup() {
-  //     clearTimeout(timeoutId);
-  //   };
-  // });
+  if (redirect) {
+    redirector = <Redirect to={redirectTo} />;
+  }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const timeoutId = setTimeout(() => {
-      history.goBack();
-      // setRedirect(true);
+      setRedirect(true);
     }, redirectTime * 1000);
     return function cleanup() {
       clearTimeout(timeoutId);
     };
-  }, [history, redirectTime]);
+  });
 
   return (
     <StyledContainer>
@@ -60,7 +52,7 @@ const RedirectingScreen = (props) => {
         {children}
       </StyledMessage>
       <LoadingBar redirectTime={redirectTime} />
-      {/* {redirector} */}
+      {redirector}
     </StyledContainer>
   );
 };

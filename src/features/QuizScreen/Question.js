@@ -103,7 +103,6 @@ const Question = (props) => {
   //todo, do something to not call it twice on enter
   //(if blur ... else ...)
   const validateQuestionHandler = (event) => {
-    console.log(props.answers);
     event.preventDefault();
     if (value) {
       if (props.answers.includes(value)) {
