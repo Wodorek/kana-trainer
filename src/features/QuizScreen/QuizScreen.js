@@ -35,6 +35,8 @@ const QuizScreen = (props) => {
     let charactersArrays = [];
     let spread = [];
 
+    console.log('modal');
+
     Object.keys(dictionary).forEach((key) => {
       Object.keys(dictionary[key]).forEach((el) => {
         if (props.selectedGroups.includes(el)) {
