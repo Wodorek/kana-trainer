@@ -18,7 +18,6 @@ const selectionSlice = createSlice({
       });
     },
     addAll: (state, action) => {
-      console.log(action.payload);
       action.payload.forEach((el) => {
         if (!state.selectedGroups.includes(el)) {
           state.selectedGroups.push(el);

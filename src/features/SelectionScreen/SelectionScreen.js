@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+import { QuestionCircle } from '@styled-icons/fa-solid/QuestionCircle';
 
 import { dictionary } from '../../common/dictionary';
 import SelectorsContainer from './SelectorsContainer';
 import HelpMessageBox from './HelpMessageBox';
 import Button from '../../common/UIElements/Button';
 import { connect } from 'react-redux';
+import Modal from '../Modal/Modal';
 
 const load = keyframes`
   0% {
@@ -15,6 +17,20 @@ const load = keyframes`
   100%
   {
     width: 100%
+  }
+`;
+
+const StyledIcon = styled(QuestionCircle)`
+  right: 3%;
+  top: 3%;
+  position: absolute;
+  height: 3rem;
+  width: auto;
+  color: ${(props) => props.theme.primary};
+  :hover {
+    cursor: pointer;
+    transition: 0.5s;
+    transform: scale(1.2);
   }
 `;
 
@@ -49,6 +65,13 @@ const StyledScreen = styled.div`
   justify-content: space-around;
 `;
 
+const StartButtonContainer = styled.div`
+  justify-content: center;
+  display: flex;
+  margin-top: 1rem;
+  padding-bottom: 2rem;
+`;
+
 const SelectionScreen = (props) => {
   const [groups, setGroups] = useState();
 
@@ -61,9 +84,25 @@ const SelectionScreen = (props) => {
   }, []);
 
   const quizStartHandler = () => {
-    onQuizStart();
+    if (props.selectedGroups.length === 0) {
+      props.onModalShow();
+    } else {
+      onQuizStart();
+      history.push('/quiz');
+    }
+  };
 
-    history.push('/quiz');
+  const closeModalHandler = () => {
+    props.onModalClose();
+    props.onModalReset();
+  };
+
+  const modalHandler = () => {
+    props.onSetHeading('How does this work?');
+    props.onSetMessage(
+      "Select groups of Hiragana or Katakana (or both!) that you want to quiz yourself on, and press start. You will see a shuffled grid of all syllables from selected groups. Type in Romaji for each syllable, and press enter to submit.\n Be careful, you'll get only one chance to input an answer into a box in each card! After all cards are completed you will see how well you've done overall. "
+    );
+    props.onModalShow();
   };
 
   let content;
@@ -73,8 +112,10 @@ const SelectionScreen = (props) => {
   } else {
     content = (
       <>
+        <Modal display={props.showModal} dismiss={closeModalHandler} />
         <StyledScreen>
-          <HelpMessageBox />
+          <StyledIcon onClick={modalHandler} />
+          {/* <HelpMessageBox /> */}
           {Object.keys(groups).map((kanaType) => {
             return (
               <SelectorsContainer
@@ -85,18 +126,11 @@ const SelectionScreen = (props) => {
             );
           })}
         </StyledScreen>
-        <div
-          style={{
-            justifyContent: 'center',
-            display: 'flex',
-            marginTop: '1rem',
-            paddingBottom: '2rem',
-          }}
-        >
+        <StartButtonContainer>
           <Button start onClick={quizStartHandler}>
             Start
           </Button>
-        </div>
+        </StartButtonContainer>
       </>
     );
   }
@@ -104,10 +138,32 @@ const SelectionScreen = (props) => {
   return content;
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    onQuizStart: () => dispatch({ type: 'selection/quizStart' }),
+    showModal: state.modal.show,
+    selectedGroups: state.selection.selectedGroups,
   };
 };
 
-export default connect(null, mapDispatchToProps)(SelectionScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onQuizStart: () => dispatch({ type: 'selection/quizStart' }),
+    onSetHeading: (payload) => {
+      dispatch({ type: 'modal/setHeading', payload: payload });
+    },
+    onSetMessage: (payload) => {
+      dispatch({ type: 'modal/setMessage', payload: payload });
+    },
+    onModalShow: () => {
+      dispatch({ type: 'modal/show' });
+    },
+    onModalClose: () => {
+      dispatch({ type: 'modal/close' });
+    },
+    onModalReset: () => {
+      dispatch({ type: 'modal/reset' });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectionScreen);

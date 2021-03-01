@@ -9,6 +9,11 @@ const StyledIcon = styled(QuestionCircle)`
   height: 3rem;
   width: auto;
   color: ${(props) => props.theme.primary};
+  :hover {
+    cursor: pointer;
+    transition: 0.5s;
+    transform: scale(1.2);
+  }
 `;
 
 const StyledText = styled.p`

@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { dictionary } from '../../common/dictionary';
 import Question from './Question';
 import styled from 'styled-components';
 import shuffle from 'lodash.shuffle';
-import RedirectingScreen from '../RedirectingScreen/RedirectingScreen';
 import { connect } from 'react-redux';
 import ProgressBar from './ProgressBar';
 
@@ -24,7 +23,16 @@ const QuizScreen = (props) => {
 
   const [completedQuestions, setCompletedQuestions] = useState(0);
 
-  const { selectedGroups, questionsTotal, quizOn, onSetTotalQuestions } = props;
+  const {
+    questionsTotal,
+    quizOn,
+    onSetTotalQuestions,
+    onSetHeading,
+    onSetMessage,
+    onModalShow,
+  } = props;
+
+  const history = useHistory();
 
   //I hate how this is done, that whole function is a travesty
   //find out how to change it later
@@ -34,8 +42,6 @@ const QuizScreen = (props) => {
   const setUpQuestions = useCallback(() => {
     let charactersArrays = [];
     let spread = [];
-
-    console.log('modal');
 
     Object.keys(dictionary).forEach((key) => {
       Object.keys(dictionary[key]).forEach((el) => {
@@ -81,19 +87,35 @@ const QuizScreen = (props) => {
     setCompletedQuestions((prev) => completedQuestions + 1);
   };
 
+  const redirect = useCallback(() => {
+    onSetHeading('No questions selected!');
+    onSetMessage(
+      'No groups were selected for the quiz. Please select some kana groups by clicking on the cards, and press start to begin'
+    );
+    onModalShow();
+    history.push('/');
+  }, [history, onModalShow, onSetHeading, onSetMessage]);
+
   useEffect(() => {
+    if (!quizOn) {
+      redirect();
+    }
+
     let questions = setUpQuestions();
     questions = shuffle(questions);
     questions = setQuestionsIndex(questions);
     setQuestions(questions);
-  }, [setQuestionsIndex, setUpQuestions, selectedGroups]);
+  }, [quizOn, redirect, setQuestionsIndex, setUpQuestions]);
 
-  let content;
+  useEffect(() => {
+    if (questionsTotal > 0 && completedQuestions === questionsTotal) {
+      history.push('/score');
+    }
+  }, [completedQuestions, history, questionsTotal]);
 
-  if (questionsTotal === completedQuestions && questionsTotal > 0) {
-    content = <Redirect to="/score" />;
-  } else if (quizOn && selectedGroups.length > 0 && questions) {
-    content = (
+  return (
+    <>
+      <ProgressBar current={completedQuestions} total={questionsTotal} />
       <StyledContainer>
         {questions.map((question) => {
           return (
@@ -107,19 +129,6 @@ const QuizScreen = (props) => {
           );
         })}
       </StyledContainer>
-    );
-  } else {
-    content = (
-      <RedirectingScreen redirectTime={3} redirectTo={'/'}>
-        Please select some groups and press start!
-      </RedirectingScreen>
-    );
-  }
-
-  return (
-    <>
-      <ProgressBar current={completedQuestions} total={questionsTotal} />
-      {content}
     </>
   );
 };
@@ -137,6 +146,15 @@ const mapDispatchToProps = (dispatch) => {
     onSetTotalQuestions: (payload) =>
       dispatch({ type: 'quiz/setTotalQuestions', payload: payload }),
     onSetUpQuestions: (payload) => dispatch({ type: 'quiz/setUpQuestions' }),
+    onSetHeading: (payload) => {
+      dispatch({ type: 'modal/setHeading', payload: payload });
+    },
+    onSetMessage: (payload) => {
+      dispatch({ type: 'modal/setMessage', payload: payload });
+    },
+    onModalShow: () => {
+      dispatch({ type: 'modal/show' });
+    },
   };
 };
 

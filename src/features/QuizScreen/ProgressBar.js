@@ -9,20 +9,19 @@ const StyledProgressContainer = styled.div`
   width: 100%;
   position: fixed;
   background-color: ${(props) => props.theme.primary};
-  bottom: 0;
+  top: 0;
 `;
 
 const StyledProgress = styled.progress`
   border: none;
   border-radius: 0;
-  margin: 0.2rem;
 
   display: block;
   color: black;
   background-color: ${(props) => props.theme.incorrect};
 
-  width: 90%;
-  height: 8px;
+  width: 100%;
+  height: 6px;
   ::-webkit-progress-bar {
     background-color: ${(props) => props.theme.incorrect};
   }
@@ -44,9 +43,7 @@ const ProgressBar = (props) => {
 
   return (
     <StyledProgressContainer>
-      <StyledLabel htmlFor="completedQuestions">
-        You completed {current} of {total} questions
-      </StyledLabel>
+      <StyledLabel htmlFor="completedQuestions"></StyledLabel>
       <StyledProgress
         value={current}
         max={total}

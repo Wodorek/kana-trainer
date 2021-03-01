@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
-import RedirectingScreen from '../RedirectingScreen/RedirectingScreen';
 import Button from '../../common/UIElements/Button';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -23,41 +22,47 @@ const StyledScoreMessage = styled.p`
 const Score = (props) => {
   const history = useHistory();
 
-  const { questionsTotal, questionsCorrect, onReset } = props;
+  const {
+    questionsTotal,
+    questionsCorrect,
+    onReset,
+    onSetHeading,
+    onSetMessage,
+    onModalShow,
+  } = props;
 
-  const calculatePercentage = () => {
+  const calculatePercentage = useCallback(() => {
     const denominator = questionsTotal;
     const numerator = questionsCorrect;
 
     const percentage = (numerator / denominator) * 100;
 
     return +percentage.toFixed(1);
-  };
+  }, [questionsCorrect, questionsTotal]);
 
   const finishQuizHandler = () => {
     onReset();
     history.push('/');
   };
 
-  let content;
+  useEffect(() => {
+    if (isNaN(calculatePercentage())) {
+      console.log('tal');
+      onSetHeading('No score to show!');
+      onSetMessage(
+        'There was no score to show. \nSelect some groups, complete the quiz, and you will see your score'
+      );
+      onModalShow();
+      history.push('/');
+    }
+  }, [calculatePercentage, history, onModalShow, onSetHeading, onSetMessage]);
 
-  if (questionsTotal > 0) {
-    content = (
-      <StyledScorePage>
-        <StyledScoreMessage>{`You got ${calculatePercentage()} % (${questionsCorrect} out of ${questionsTotal}) correct!`}</StyledScoreMessage>
-        <Button onClick={finishQuizHandler}>Go again</Button>
-      </StyledScorePage>
-    );
-  } else {
-    content = (
-      // <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
-      <RedirectingScreen redirectTime={3} redirectTo={'/'}>
-        No score to show! Select some groups, and press start to take the quiz
-      </RedirectingScreen>
-    );
-  }
-
-  return content;
+  return (
+    <StyledScorePage>
+      <StyledScoreMessage>{`You got ${calculatePercentage()} % (${questionsCorrect} out of ${questionsTotal}) correct!`}</StyledScoreMessage>
+      <Button onClick={finishQuizHandler}>Go again</Button>
+    </StyledScorePage>
+  );
 };
 
 const mapStateToProps = (state) => {
@@ -73,6 +78,15 @@ const mapDispatchToProps = (dispatch) => {
       return (
         dispatch({ type: 'selection/reset' }), dispatch({ type: 'quiz/reset' })
       );
+    },
+    onSetHeading: (payload) => {
+      dispatch({ type: 'modal/setHeading', payload: payload });
+    },
+    onSetMessage: (payload) => {
+      dispatch({ type: 'modal/setMessage', payload: payload });
+    },
+    onModalShow: () => {
+      dispatch({ type: 'modal/show' });
     },
   };
 };
