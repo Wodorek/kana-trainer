@@ -19,6 +19,13 @@ const StyledScoreMessage = styled.p`
   font-size: 4rem;
 `;
 
+const StyledButtonGroup = styled.div`
+  width: 70%;
+  justify-content: space-around;
+  display: flex;
+  margin-top: 2rem;
+`;
+
 const Score = (props) => {
   const history = useHistory();
 
@@ -29,6 +36,7 @@ const Score = (props) => {
     onSetHeading,
     onSetMessage,
     onModalShow,
+    onRestart,
   } = props;
 
   const calculatePercentage = useCallback(() => {
@@ -40,14 +48,18 @@ const Score = (props) => {
     return +percentage.toFixed(1);
   }, [questionsCorrect, questionsTotal]);
 
-  const finishQuizHandler = () => {
+  const resetQuizHandler = () => {
     onReset();
     history.push('/');
   };
 
+  const restartQuizHandler = () => {
+    onRestart();
+    history.push('/quiz');
+  };
+
   useEffect(() => {
     if (isNaN(calculatePercentage())) {
-      console.log('tal');
       onSetHeading('No score to show!');
       onSetMessage(
         'There was no score to show. \nSelect some groups, complete the quiz, and you will see your score'
@@ -60,7 +72,10 @@ const Score = (props) => {
   return (
     <StyledScorePage>
       <StyledScoreMessage>{`You got ${calculatePercentage()} % (${questionsCorrect} out of ${questionsTotal}) correct!`}</StyledScoreMessage>
-      <Button onClick={finishQuizHandler}>Go again</Button>
+      <StyledButtonGroup>
+        <Button onClick={restartQuizHandler}>Try again</Button>
+        <Button onClick={resetQuizHandler}>Change groups</Button>
+      </StyledButtonGroup>
     </StyledScorePage>
   );
 };
@@ -78,6 +93,9 @@ const mapDispatchToProps = (dispatch) => {
       return (
         dispatch({ type: 'selection/reset' }), dispatch({ type: 'quiz/reset' })
       );
+    },
+    onRestart: () => {
+      dispatch({ type: 'quiz/restart' });
     },
     onSetHeading: (payload) => {
       dispatch({ type: 'modal/setHeading', payload: payload });

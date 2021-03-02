@@ -15,6 +15,9 @@ const quizSlice = createSlice({
     questionCorrect: (state) => {
       state.questionsCorrect += 1;
     },
+    restart: (state) => {
+      state.questionsCorrect = 0;
+    },
     reset: () => initialState,
   },
 });
