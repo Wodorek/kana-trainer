@@ -13,10 +13,16 @@ const StyledScorePage = styled.div`
   align-items: center;
   text-align: center;
   min-height: 100vh;
+  @media (max-width: 421px) {
+    padding: 1rem;
+  }
 `;
 
 const StyledScoreMessage = styled.p`
   font-size: 4rem;
+  @media (max-width: 421px) {
+    font-size: 3rem;
+  }
 `;
 
 const StyledButtonGroup = styled.div`
@@ -24,6 +30,10 @@ const StyledButtonGroup = styled.div`
   justify-content: space-around;
   display: flex;
   margin-top: 2rem;
+  @media (max-width: 421px) {
+    flex-direction: column;
+    gap: 2rem;
+  }
 `;
 
 const Score = (props) => {

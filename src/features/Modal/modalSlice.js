@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   show: false,
-  heading: 'Something went Wrong',
+  heading: 'Something went wrong',
   message: 'Something went wrong, please try again',
 };
 

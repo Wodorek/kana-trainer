@@ -75,6 +75,8 @@ const Question = (props) => {
   const [value, setValue] = useState('');
   const [correct, setCorrect] = useState(null);
 
+  const { index, answers, onQuestionCorrect, completeQuestion, name } = props;
+
   const changeHandler = (event) => {
     setValue(event.target.value);
   };
@@ -94,33 +96,31 @@ const Question = (props) => {
 
   const focusInput = () => {
     //todo this should be handled with refs later
-    const nextQuestion = getNextQuestion(props.index);
+    const nextQuestion = getNextQuestion(index);
     if (nextQuestion !== null) {
       nextQuestion.focus();
     }
   };
 
-  //todo, do something to not call it twice on enter
-  //(if blur ... else ...)
   const validateQuestionHandler = (event) => {
     event.preventDefault();
     if (value) {
-      if (props.answers.includes(value)) {
-        props.onQuestionCorrect();
+      if (answers.includes(value)) {
+        onQuestionCorrect();
         setCorrect(true);
       } else {
         setCorrect(false);
       }
       setDisabled(true);
 
-      props.completeQuestion();
+      completeQuestion();
       focusInput();
     }
   };
 
   return (
     <StyledQuestion correct={correct}>
-      <StyledCardText>{props.name}</StyledCardText>
+      <StyledCardText>{name}</StyledCardText>
       <form
         onChange={changeHandler}
         onSubmit={(event) => validateQuestionHandler(event)}
@@ -128,9 +128,8 @@ const Question = (props) => {
       >
         <StyledInput
           autoComplete="off"
-          id={props.index}
+          id={index}
           maxLength="3"
-          // onBlur={validateQuestionHandler}
           disabled={disabled ? 'disabled' : ''}
         ></StyledInput>
       </form>

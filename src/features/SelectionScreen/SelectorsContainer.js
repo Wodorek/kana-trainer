@@ -9,6 +9,11 @@ const StyledContainer = styled.div`
   margin-top: 1rem;
   justify-content: space-around;
   width: 40vw;
+  @media (max-width: 521px) {
+    justify-content: center;
+    width: 100%;
+    padding: 0.5rem;
+  }
 `;
 
 const StyledElements = styled.div`
@@ -16,6 +21,11 @@ const StyledElements = styled.div`
   justify-content: left;
   display: flex;
   flex-wrap: wrap;
+  @media (max-width: 521px) {
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100;
+  }
 `;
 
 const StyledHeading = styled.h1`
@@ -36,9 +46,9 @@ const StyledButtonsGroup = styled.div`
 const SelectorsContainer = (props) => {
   //consider iterating over items with lodash functions
 
-  const itemsIterable = Object.keys(props.items);
-
   const { items, groupName, select, onAddAll, onRemoveAll } = props;
+
+  const itemsIterable = Object.keys(items);
 
   return (
     <StyledContainer>

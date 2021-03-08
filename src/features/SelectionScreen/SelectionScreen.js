@@ -5,10 +5,10 @@ import { QuestionCircle } from '@styled-icons/fa-solid/QuestionCircle';
 
 import { dictionary } from '../../common/dictionary';
 import SelectorsContainer from './SelectorsContainer';
-import HelpMessageBox from './HelpMessageBox';
 import Button from '../../common/UIElements/Button';
 import { connect } from 'react-redux';
 import Modal from '../Modal/Modal';
+import MobileFooter from '../../common/UIElements/MobileFooter';
 
 const load = keyframes`
   0% {
@@ -21,9 +21,8 @@ const load = keyframes`
 `;
 
 const StyledIcon = styled(QuestionCircle)`
-  right: 3%;
-  top: 3%;
-  position: absolute;
+  display: block;
+  margin: 15px 15px 0 auto;
   height: 3rem;
   width: auto;
   color: ${(props) => props.theme.primary};
@@ -63,6 +62,11 @@ const StyledScreen = styled.div`
   display: flex;
   column-count: 2;
   justify-content: space-around;
+  @media (max-width: 521px) {
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
 const StartButtonContainer = styled.div`
@@ -77,15 +81,32 @@ const SelectionScreen = (props) => {
 
   const history = useHistory();
 
-  const { onQuizStart } = props;
+  const {
+    onQuizStart,
+    selectedGroups,
+    onModalShow,
+    onModalClose,
+    onModalReset,
+    onSetHeading,
+    onSetMessage,
+    showModal,
+  } = props;
+
+  const mql = window.matchMedia('(max-width: 412px)');
+
+  const mobileView = mql.matches;
 
   useEffect(() => {
     setGroups(dictionary);
   }, []);
 
   const quizStartHandler = () => {
-    if (props.selectedGroups.length === 0) {
-      props.onModalShow();
+    if (selectedGroups.length === 0) {
+      onSetHeading('No groups selected!');
+      onSetMessage(
+        'No groups were selected for the quiz. Select some by clicking on the cards, and then press "start" to continue with the quiz.'
+      );
+      onModalShow();
     } else {
       onQuizStart();
       history.push('/quiz');
@@ -93,29 +114,41 @@ const SelectionScreen = (props) => {
   };
 
   const closeModalHandler = () => {
-    props.onModalClose();
-    props.onModalReset();
+    onModalClose();
+    onModalReset();
   };
 
-  const modalHandler = () => {
-    props.onSetHeading('How does this work?');
-    props.onSetMessage(
+  const helpMessageHandler = () => {
+    onSetHeading('How does this work?');
+    onSetMessage(
       "Select groups of Hiragana or Katakana (or both!) that you want to quiz yourself on, and press start. You will see a shuffled grid of all syllables from selected groups. Type in Romaji for each syllable, and press enter to submit.\n Be careful, you'll get only one chance to input an answer into a box in each card! After all cards are completed you will see how well you've done overall. "
     );
-    props.onModalShow();
+    onModalShow();
   };
 
   let content;
+  let startDiv;
+
+  if (mobileView) {
+    startDiv = <MobileFooter onClick={quizStartHandler} />;
+  } else {
+    startDiv = (
+      <StartButtonContainer>
+        <Button start onClick={quizStartHandler}>
+          Start
+        </Button>
+      </StartButtonContainer>
+    );
+  }
 
   if (!groups) {
     content = <StyledMessage>少々お待ち下さい</StyledMessage>;
   } else {
     content = (
       <>
-        <Modal display={props.showModal} dismiss={closeModalHandler} />
+        <Modal display={showModal} dismiss={closeModalHandler} />
+        <StyledIcon onClick={helpMessageHandler} />
         <StyledScreen>
-          <StyledIcon onClick={modalHandler} />
-          {/* <HelpMessageBox /> */}
           {Object.keys(groups).map((kanaType) => {
             return (
               <SelectorsContainer
@@ -126,16 +159,16 @@ const SelectionScreen = (props) => {
             );
           })}
         </StyledScreen>
-        <StartButtonContainer>
-          <Button start onClick={quizStartHandler}>
-            Start
-          </Button>
-        </StartButtonContainer>
       </>
     );
   }
 
-  return content;
+  return (
+    <>
+      {content}
+      {startDiv}
+    </>
+  );
 };
 
 const mapStateToProps = (state) => {

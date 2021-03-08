@@ -20,6 +20,9 @@ const StyledButton = styled.button`
     box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, 0.5);
     transform: scale(1.1);
   }
+  @media (max-width: 421px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const Button = (props) => {
