@@ -113,7 +113,7 @@ const SelectionScreen = (props) => {
     }
   };
 
-  const closeModalHandler = () => {
+  const closeModalHandler = (event) => {
     onModalClose();
     onModalReset();
   };

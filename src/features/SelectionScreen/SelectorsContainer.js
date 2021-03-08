@@ -1,7 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { addAll, removeAll } from './selectionSlice';
 import Button from '../../common/UIElements/Button';
 import GroupSelector from './GroupSelector';
 
@@ -45,7 +46,9 @@ const StyledButtonsGroup = styled.div`
 const SelectorsContainer = (props) => {
   //consider iterating over items with lodash functions
 
-  const { items, groupName, select, onAddAll, onRemoveAll } = props;
+  const { items, groupName, select } = props;
+
+  const dispatch = useDispatch();
 
   const itemsIterable = Object.keys(items);
 
@@ -66,20 +69,15 @@ const SelectorsContainer = (props) => {
         })}
       </StyledElements>
       <StyledButtonsGroup className="scButtons">
-        <Button onClick={() => onAddAll(itemsIterable)}>Select All</Button>
-        <Button onClick={() => onRemoveAll(itemsIterable)}>Deselect All</Button>
+        <Button onClick={() => dispatch(addAll(itemsIterable))}>
+          Select All
+        </Button>
+        <Button onClick={() => dispatch(removeAll(itemsIterable))}>
+          Deselect All
+        </Button>
       </StyledButtonsGroup>
     </StyledContainer>
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAddAll: (payload) =>
-      dispatch({ type: 'selection/addAll', payload: payload }),
-    onRemoveAll: (payload) =>
-      dispatch({ type: 'selection/removeAll', payload: payload }),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(SelectorsContainer);
+export default SelectorsContainer;

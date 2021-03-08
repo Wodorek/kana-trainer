@@ -62,7 +62,7 @@ const StyledExplanation = styled.p`
 const Modal = (props) => {
   const { display, heading, message, dismiss } = props;
   return (
-    <StyledModal onClick={dismiss} display={display ? 1 : 0}>
+    <StyledModal display={display ? 1 : 0}>
       <StyledMessage>
         <StyledHeading> {heading}</StyledHeading>
         <StyledExplanation>{message}</StyledExplanation>

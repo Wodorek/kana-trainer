@@ -38,6 +38,13 @@ const selectionSlice = createSlice({
 
 const { actions, reducer } = selectionSlice;
 
-export const { addGroup, removeGroup, addAll, quizStart, reset } = actions;
+export const {
+  addGroup,
+  removeGroup,
+  addAll,
+  removeAll,
+  quizStart,
+  reset,
+} = actions;
 
 export default reducer;
