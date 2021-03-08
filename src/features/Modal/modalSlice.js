@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  show: false,
+  display: false,
   heading: 'Something went wrong',
   message: 'Something went wrong, please try again',
 };
@@ -16,18 +16,24 @@ const modalSlice = createSlice({
     setMessage: (state, action) => {
       state.message = action.payload;
     },
-    show: (state) => {
-      state.show = true;
+    displayModal: (state) => {
+      state.display = true;
     },
-    close: (state) => {
-      state.show = false;
+    closeModal: (state) => {
+      state.display = false;
     },
-    reset: () => initialState,
+    resetModal: () => initialState,
   },
 });
 
 const { actions, reducer } = modalSlice;
 
-export const { setHeading, setMessage, reset, show, close } = actions;
+export const {
+  setHeading,
+  setMessage,
+  resetModal,
+  displayModal,
+  closeModal,
+} = actions;
 
 export default reducer;

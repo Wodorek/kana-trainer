@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { setHeading, setMessage, displayModal } from '../Modal/modalSlice';
+import { setTotalQuestions } from '../QuizScreen/quizSlice';
 import { dictionary } from '../../common/dictionary';
 import Question from './Question';
 import styled from 'styled-components';
 import shuffle from 'lodash.shuffle';
-import { connect } from 'react-redux';
 import ProgressBar from './ProgressBar';
 
 const StyledContainer = styled.div`
@@ -23,16 +25,15 @@ const QuizScreen = (props) => {
 
   const [completedQuestions, setCompletedQuestions] = useState(0);
 
-  const {
-    questionsTotal,
-    quizOn,
-    onSetTotalQuestions,
-    onSetHeading,
-    onSetMessage,
-    onModalShow,
-  } = props;
-
   const history = useHistory();
+
+  const dispatch = useDispatch();
+
+  const selectedGroups = useSelector((state) => state.selection.selectedGroups);
+
+  const questionsTotal = useSelector((state) => state.quiz.questionsTotal);
+
+  const quizOn = useSelector((state) => state.selection.quizOn);
 
   //I hate how this is done, that whole function is a travesty
   //find out how to change it later
@@ -45,7 +46,7 @@ const QuizScreen = (props) => {
 
     Object.keys(dictionary).forEach((key) => {
       Object.keys(dictionary[key]).forEach((el) => {
-        if (props.selectedGroups.includes(el)) {
+        if (selectedGroups.includes(el)) {
           charactersArrays = [
             ...charactersArrays,
             dictionary[key][el].characters,
@@ -65,7 +66,7 @@ const QuizScreen = (props) => {
     });
 
     return spread;
-  }, [props.selectedGroups]);
+  }, [selectedGroups]);
 
   //assigns index AFTER shuffle, for focusing
   const setQuestionsIndex = useCallback(
@@ -77,10 +78,10 @@ const QuizScreen = (props) => {
         itemIndex++;
         return { ...question, index: itemIndex };
       });
-      onSetTotalQuestions(itemIndex);
+      dispatch(setTotalQuestions(itemIndex));
       return withAssignedIndex;
     },
-    [onSetTotalQuestions]
+    [dispatch]
   );
 
   const questionCompleteHandler = () => {
@@ -88,13 +89,15 @@ const QuizScreen = (props) => {
   };
 
   const redirect = useCallback(() => {
-    onSetHeading('No questions selected!');
-    onSetMessage(
-      'No groups were selected for the quiz. Please select some kana groups by clicking on the cards, and press start to begin'
+    dispatch(setHeading('No questions selected!'));
+    dispatch(
+      setMessage(
+        'No groups were selected for the quiz. Please select some kana groups by clicking on the cards, and press start to begin'
+      )
     );
-    onModalShow();
+    dispatch(displayModal());
     history.push('/');
-  }, [history, onModalShow, onSetHeading, onSetMessage]);
+  }, [dispatch, history]);
 
   useEffect(() => {
     if (!quizOn) {
@@ -133,29 +136,4 @@ const QuizScreen = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    selectedGroups: state.selection.selectedGroups,
-    questionsTotal: state.quiz.questionsTotal,
-    quizOn: state.selection.quizOn,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSetTotalQuestions: (payload) =>
-      dispatch({ type: 'quiz/setTotalQuestions', payload: payload }),
-    onSetUpQuestions: (payload) => dispatch({ type: 'quiz/setUpQuestions' }),
-    onSetHeading: (payload) => {
-      dispatch({ type: 'modal/setHeading', payload: payload });
-    },
-    onSetMessage: (payload) => {
-      dispatch({ type: 'modal/setMessage', payload: payload });
-    },
-    onModalShow: () => {
-      dispatch({ type: 'modal/show' });
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuizScreen);
+export default QuizScreen;

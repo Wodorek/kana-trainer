@@ -2,11 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { QuestionCircle } from '@styled-icons/fa-solid/QuestionCircle';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { quizStart } from './selectionSlice';
+import {
+  setHeading,
+  setMessage,
+  displayModal,
+  closeModal,
+  resetModal,
+} from '../Modal/modalSlice';
 import { dictionary } from '../../common/dictionary';
 import SelectorsContainer from './SelectorsContainer';
 import Button from '../../common/UIElements/Button';
-import { connect } from 'react-redux';
 import Modal from '../Modal/Modal';
 import MobileFooter from '../../common/UIElements/MobileFooter';
 
@@ -81,16 +89,11 @@ const SelectionScreen = (props) => {
 
   const history = useHistory();
 
-  const {
-    onQuizStart,
-    selectedGroups,
-    onModalShow,
-    onModalClose,
-    onModalReset,
-    onSetHeading,
-    onSetMessage,
-    showModal,
-  } = props;
+  const dispatch = useDispatch();
+
+  const showModal = useSelector((state) => state.modal.display);
+
+  const selectedGroups = useSelector((state) => state.selection.selectedGroups);
 
   const mql = window.matchMedia('(max-width: 412px)');
 
@@ -102,28 +105,32 @@ const SelectionScreen = (props) => {
 
   const quizStartHandler = () => {
     if (selectedGroups.length === 0) {
-      onSetHeading('No groups selected!');
-      onSetMessage(
-        'No groups were selected for the quiz. Select some by clicking on the cards, and then press "start" to continue with the quiz.'
+      dispatch(setHeading('No groups selected!'));
+      dispatch(
+        setMessage(
+          'No groups were selected for the quiz. Select some by clicking on the cards, and then press "start" to continue with the quiz.'
+        )
       );
-      onModalShow();
+      dispatch(displayModal());
     } else {
-      onQuizStart();
+      dispatch(quizStart());
       history.push('/quiz');
     }
   };
 
-  const closeModalHandler = (event) => {
-    onModalClose();
-    onModalReset();
+  const closeModalHandler = () => {
+    dispatch(closeModal());
+    dispatch(resetModal());
   };
 
   const helpMessageHandler = () => {
-    onSetHeading('How does this work?');
-    onSetMessage(
-      "Select groups of Hiragana or Katakana (or both!) that you want to quiz yourself on, and press start. You will see a shuffled grid of all syllables from selected groups. Type in Romaji for each syllable, and press enter to submit.\n Be careful, you'll get only one chance to input an answer into a box in each card! After all cards are completed you will see how well you've done overall. "
+    dispatch(setHeading('How does this work?'));
+    dispatch(
+      setMessage(
+        "Select groups of Hiragana or Katakana (or both!) that you want to quiz yourself on, and press start. You will see a shuffled grid of all syllables from selected groups. Type in Romaji for each syllable, and press enter to submit.\n Be careful, you'll get only one chance to input an answer into a box in each card! After all cards are completed you will see how well you've done overall. "
+      )
     );
-    onModalShow();
+    dispatch(displayModal());
   };
 
   let content;
@@ -171,32 +178,4 @@ const SelectionScreen = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    showModal: state.modal.show,
-    selectedGroups: state.selection.selectedGroups,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onQuizStart: () => dispatch({ type: 'selection/quizStart' }),
-    onSetHeading: (payload) => {
-      dispatch({ type: 'modal/setHeading', payload: payload });
-    },
-    onSetMessage: (payload) => {
-      dispatch({ type: 'modal/setMessage', payload: payload });
-    },
-    onModalShow: () => {
-      dispatch({ type: 'modal/show' });
-    },
-    onModalClose: () => {
-      dispatch({ type: 'modal/close' });
-    },
-    onModalReset: () => {
-      dispatch({ type: 'modal/reset' });
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SelectionScreen);
+export default SelectionScreen;

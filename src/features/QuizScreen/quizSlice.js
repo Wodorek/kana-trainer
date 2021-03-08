@@ -24,6 +24,6 @@ const quizSlice = createSlice({
 
 const { actions, reducer } = quizSlice;
 
-export const { setTotalQuestions, questionCorrect } = actions;
+export const { setTotalQuestions, questionCorrect, restart } = actions;
 
 export default reducer;

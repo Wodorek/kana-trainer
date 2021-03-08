@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+
+import { questionCorrect } from './quizSlice';
 
 const StyledQuestion = styled.div`
   --height: 15rem;
@@ -75,7 +77,9 @@ const Question = (props) => {
   const [value, setValue] = useState('');
   const [correct, setCorrect] = useState(null);
 
-  const { index, answers, onQuestionCorrect, completeQuestion, name } = props;
+  const dispatch = useDispatch();
+
+  const { index, answers, completeQuestion, name } = props;
 
   const changeHandler = (event) => {
     setValue(event.target.value);
@@ -106,7 +110,7 @@ const Question = (props) => {
     event.preventDefault();
     if (value) {
       if (answers.includes(value)) {
-        onQuestionCorrect();
+        dispatch(questionCorrect());
         setCorrect(true);
       } else {
         setCorrect(false);
@@ -137,10 +141,4 @@ const Question = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onQuestionCorrect: () => dispatch({ type: 'quiz/questionCorrect' }),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Question);
+export default Question;

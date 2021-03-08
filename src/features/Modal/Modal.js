@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 import Button from '../../common/UIElements/Button';
+import { useSelector } from 'react-redux';
 
 const animation = keyframes`
 0% {
@@ -60,7 +60,10 @@ const StyledExplanation = styled.p`
 `;
 
 const Modal = (props) => {
-  const { display, heading, message, dismiss } = props;
+  const heading = useSelector((state) => state.modal.heading);
+  const message = useSelector((state) => state.modal.message);
+
+  const { display, dismiss } = props;
   return (
     <StyledModal display={display ? 1 : 0}>
       <StyledMessage>
@@ -72,11 +75,4 @@ const Modal = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    heading: state.modal.heading,
-    message: state.modal.message,
-  };
-};
-
-export default connect(mapStateToProps)(Modal);
+export default Modal;

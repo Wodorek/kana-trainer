@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-
-import Button from '../../common/UIElements/Button';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setHeading, setMessage, displayModal } from '../Modal/modalSlice';
+import { restart } from '../QuizScreen/quizSlice';
+import { reset } from '../SelectionScreen/selectionSlice';
+import Button from '../../common/UIElements/Button';
 
 const StyledScorePage = styled.div`
   gap: 3rem;
@@ -36,18 +39,14 @@ const StyledButtonGroup = styled.div`
   }
 `;
 
-const Score = (props) => {
+const Score = () => {
   const history = useHistory();
 
-  const {
-    questionsTotal,
-    questionsCorrect,
-    onReset,
-    onSetHeading,
-    onSetMessage,
-    onModalShow,
-    onRestart,
-  } = props;
+  const dispatch = useDispatch();
+
+  const questionsTotal = useSelector((state) => state.quiz.questionsTotal);
+
+  const questionsCorrect = useSelector((state) => state.quiz.questionsCorrect);
 
   const calculatePercentage = useCallback(() => {
     const denominator = questionsTotal;
@@ -59,25 +58,28 @@ const Score = (props) => {
   }, [questionsCorrect, questionsTotal]);
 
   const resetQuizHandler = () => {
-    onReset();
+    dispatch(reset());
     history.push('/');
   };
 
   const restartQuizHandler = () => {
-    onRestart();
+    dispatch(restart());
     history.push('/quiz');
   };
 
   useEffect(() => {
     if (isNaN(calculatePercentage())) {
-      onSetHeading('No score to show!');
-      onSetMessage(
-        'There was no score to show. \nSelect some groups, complete the quiz, and you will see your score'
+      dispatch(setHeading('No score to show!'));
+      dispatch(
+        setMessage(
+          'There was no score to show. \nSelect some groups, complete the quiz, and you will see your score'
+        )
       );
-      onModalShow();
+      dispatch(displayModal());
+
       history.push('/');
     }
-  }, [calculatePercentage, history, onModalShow, onSetHeading, onSetMessage]);
+  }, [calculatePercentage, dispatch, history]);
 
   return (
     <StyledScorePage>
@@ -90,33 +92,4 @@ const Score = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    questionsTotal: state.quiz.questionsTotal,
-    questionsCorrect: state.quiz.questionsCorrect,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onReset: () => {
-      return (
-        dispatch({ type: 'selection/reset' }), dispatch({ type: 'quiz/reset' })
-      );
-    },
-    onRestart: () => {
-      dispatch({ type: 'quiz/restart' });
-    },
-    onSetHeading: (payload) => {
-      dispatch({ type: 'modal/setHeading', payload: payload });
-    },
-    onSetMessage: (payload) => {
-      dispatch({ type: 'modal/setMessage', payload: payload });
-    },
-    onModalShow: () => {
-      dispatch({ type: 'modal/show' });
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Score);
+export default Score;
