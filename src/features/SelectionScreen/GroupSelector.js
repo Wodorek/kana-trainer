@@ -20,6 +20,9 @@ const SelectorCard = styled.div`
     props.selected ? props.theme.primary : `white`};
   transition: 0.5s;
   transform: ${(props) => (props.selected ? 'rotateY(180deg)' : '')};
+  :hover {
+    cursor: pointer;
+  }
   @media (max-width: 421px) {
     border: solid 3px;
     --percentage: 0.7;
@@ -33,7 +36,6 @@ const CardText = styled.p`
   transition: 0.5s;
   transform: ${(props) => (props.selected ? 'rotateY(180deg)' : '')};
   margin: auto;
-  cursor: default;
   ::selection {
     text-decoration: none;
   }
