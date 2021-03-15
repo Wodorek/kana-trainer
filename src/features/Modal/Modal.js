@@ -26,16 +26,18 @@ const StyledModal = styled.div`
 
 const StyledMessage = styled.div`
   padding: 2rem;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   min-height: 25rem;
   width: 40%;
-  background-color: white;
+  background-color: whitesmoke;
   animation: ${animation} 0.2s;
   @media (max-width: 821px) {
     padding: 0.5rem;
+    padding-bottom: 2rem;
     width: 70%;
   }
 `;

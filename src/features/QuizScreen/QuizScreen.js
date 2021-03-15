@@ -3,12 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setHeading, setMessage, displayModal } from '../Modal/modalSlice';
-import { setTotalQuestions } from '../QuizScreen/quizSlice';
+import { setTotalQuestions, completeQuestion } from '../QuizScreen/quizSlice';
 import { dictionary } from '../../common/dictionary';
 import Question from './Question';
 import styled from 'styled-components';
 import shuffle from 'lodash.shuffle';
 import ProgressBar from './ProgressBar';
+import StatsBox from '../StatsBox/StatsBox';
 
 const StyledContainer = styled.div`
   width: 95%;
@@ -20,14 +21,16 @@ const StyledContainer = styled.div`
   gap: 1rem;
 `;
 
-const QuizScreen = (props) => {
+const QuizScreen = () => {
   const [questions, setQuestions] = useState([]);
-
-  const [completedQuestions, setCompletedQuestions] = useState(0);
 
   const history = useHistory();
 
   const dispatch = useDispatch();
+
+  const questionsCompleted = useSelector(
+    (state) => state.quiz.questionsCompleted
+  );
 
   const selectedGroups = useSelector((state) => state.selection.selectedGroups);
 
@@ -85,7 +88,7 @@ const QuizScreen = (props) => {
   );
 
   const questionCompleteHandler = () => {
-    setCompletedQuestions((prev) => completedQuestions + 1);
+    dispatch(completeQuestion());
   };
 
   const redirect = useCallback(() => {
@@ -111,14 +114,15 @@ const QuizScreen = (props) => {
   }, [quizOn, redirect, setQuestionsIndex, setUpQuestions]);
 
   useEffect(() => {
-    if (questionsTotal > 0 && completedQuestions === questionsTotal) {
+    if (questionsTotal > 0 && questionsCompleted === questionsTotal) {
       history.push('/score');
     }
-  }, [completedQuestions, history, questionsTotal]);
+  }, [questionsCompleted, history, questionsTotal]);
 
   return (
     <>
-      <ProgressBar current={completedQuestions} total={questionsTotal} />
+      <ProgressBar current={questionsCompleted} total={questionsTotal} />
+      <StatsBox />
       <StyledContainer>
         {questions.map((question) => {
           return (

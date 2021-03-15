@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { calculatePercentage } from '../../common/Util/calculatePercentage';
 import { setHeading, setMessage, displayModal } from '../Modal/modalSlice';
 import { restart } from '../QuizScreen/quizSlice';
 import { reset } from '../SelectionScreen/selectionSlice';
@@ -48,14 +49,7 @@ const Score = () => {
 
   const questionsCorrect = useSelector((state) => state.quiz.questionsCorrect);
 
-  const calculatePercentage = useCallback(() => {
-    const denominator = questionsTotal;
-    const numerator = questionsCorrect;
-
-    const percentage = (numerator / denominator) * 100;
-
-    return +percentage.toFixed(1);
-  }, [questionsCorrect, questionsTotal]);
+  const percentage = calculatePercentage(questionsTotal, questionsCorrect);
 
   const resetQuizHandler = () => {
     dispatch(reset());
@@ -68,7 +62,7 @@ const Score = () => {
   };
 
   useEffect(() => {
-    if (isNaN(calculatePercentage())) {
+    if (isNaN(calculatePercentage(questionsTotal, questionsCorrect))) {
       dispatch(setHeading('No score to show!'));
       dispatch(
         setMessage(
@@ -79,11 +73,11 @@ const Score = () => {
 
       history.push('/');
     }
-  }, [calculatePercentage, dispatch, history]);
+  }, [dispatch, history, questionsCorrect, questionsTotal]);
 
   return (
     <StyledScorePage>
-      <StyledScoreMessage>{`You got ${calculatePercentage()} % (${questionsCorrect} out of ${questionsTotal}) correct!`}</StyledScoreMessage>
+      <StyledScoreMessage>{`You got ${percentage} % (${questionsCorrect} out of ${questionsTotal}) correct!`}</StyledScoreMessage>
       <StyledButtonGroup>
         <Button onClick={restartQuizHandler}>Try again</Button>
         <Button onClick={resetQuizHandler}>Change groups</Button>
