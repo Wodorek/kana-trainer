@@ -50,7 +50,7 @@ const StatsBox = () => {
     (state) => state.quiz.questionsCompleted
   );
 
-  const percentage = calculatePercentage(questionsTotal, questionsCorrect);
+  const percentage = calculatePercentage(questionsCompleted, questionsCorrect);
   const questionsLeft = questionsTotal - questionsCompleted;
 
   return (
@@ -59,7 +59,7 @@ const StatsBox = () => {
         <IconStyleWrapper>
           <ThumbsUp />
         </IconStyleWrapper>
-        <span>{percentage ? percentage : '100'}%</span>
+        <span>{isNaN(percentage) ? '100' : percentage}%</span>
       </StyledSectionWrapper>
       <StyledSectionWrapper>
         <IconStyleWrapper>
