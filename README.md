@@ -2,7 +2,8 @@
 
 A simple webapp to practice recognition of selected hiragana and katakana groups
 
-##T able of contents
+## Table of contents
+
 [General info](#general-info)
 [Technologies](#technologies)
 [Setup](#setup)
