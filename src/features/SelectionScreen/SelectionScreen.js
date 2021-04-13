@@ -28,9 +28,15 @@ const load = keyframes`
   }
 `;
 
+const StContainer = styled.div`
+  position: relative;
+`;
+
 const StyledIcon = styled(QuestionCircle)`
   display: block;
-  margin: 15px 15px 0 auto;
+  position: absolute;
+  right: 15px;
+  top: 15px;
   height: 3rem;
   width: auto;
   color: ${(props) => props.theme.primary};
@@ -81,7 +87,6 @@ const StartButtonContainer = styled.div`
   justify-content: center;
   display: flex;
   margin-top: 1rem;
-  padding-bottom: 2rem;
 `;
 
 const SelectionScreen = (props) => {
@@ -152,7 +157,7 @@ const SelectionScreen = (props) => {
     content = <StyledMessage>少々お待ち下さい</StyledMessage>;
   } else {
     content = (
-      <>
+      <StContainer>
         <Modal display={showModal} dismiss={closeModalHandler} />
         <StyledIcon onClick={helpMessageHandler} />
         <StyledScreen>
@@ -166,7 +171,7 @@ const SelectionScreen = (props) => {
             );
           })}
         </StyledScreen>
-      </>
+      </StContainer>
     );
   }
 

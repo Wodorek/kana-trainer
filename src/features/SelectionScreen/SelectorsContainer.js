@@ -7,6 +7,7 @@ import Button from '../../common/UIElements/Button';
 import GroupSelector from './GroupSelector';
 
 const StyledContainer = styled.div`
+  margin-top: 1.5rem;
   justify-content: space-around;
   width: 40vw;
   @media (max-width: 521px) {

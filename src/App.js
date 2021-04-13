@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-
 import SelectionScreen from './features/SelectionScreen/SelectionScreen';
 import QuizScreen from './features/QuizScreen/QuizScreen';
 import ScoreScreen from './features/ScoreScreen/ScoreScreen';
