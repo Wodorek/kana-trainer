@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { StyledIconBase } from '@styled-icons/styled-icon';
-import { Check, Inbox, Satellite, ThumbsUp } from '@styled-icons/fa-solid';
+import { Check, Inbox, ThumbsUp } from '@styled-icons/fa-solid';
 import { useSelector } from 'react-redux';
 import { calculatePercentage } from '../../common/Util/calculatePercentage';
 
