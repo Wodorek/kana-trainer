@@ -53,6 +53,7 @@ const Score = () => {
 
   const resetQuizHandler = () => {
     dispatch(reset());
+    dispatch(restart());
     history.push('/');
   };
 
