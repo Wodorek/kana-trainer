@@ -108,18 +108,20 @@ const Question = (props) => {
 
   const validateQuestionHandler = (event) => {
     event.preventDefault();
-    if (value) {
-      if (answers.includes(value)) {
-        dispatch(questionCorrect());
-        setCorrect(true);
-      } else {
-        setCorrect(false);
-      }
-      setDisabled(true);
-
-      completeQuestion();
-      focusInput();
+    if (!value) {
+      return;
     }
+
+    if (answers.includes(value)) {
+      dispatch(questionCorrect());
+      setCorrect(true);
+    } else {
+      setCorrect(false);
+    }
+    setDisabled(true);
+
+    completeQuestion();
+    focusInput();
   };
 
   return (
