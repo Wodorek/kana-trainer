@@ -79,7 +79,7 @@ const Question = (props) => {
 
   const dispatch = useDispatch();
 
-  const { index, answers, completeQuestion, name } = props;
+  const { index, answers, completeQuestion, name, parentGroup } = props;
 
   const changeHandler = (event) => {
     setValue(event.target.value);
@@ -114,13 +114,14 @@ const Question = (props) => {
 
     if (answers.includes(value)) {
       dispatch(questionCorrect());
+      completeQuestion(name, parentGroup, true);
       setCorrect(true);
     } else {
+      completeQuestion(name, parentGroup, false);
       setCorrect(false);
     }
     setDisabled(true);
 
-    completeQuestion();
     focusInput();
   };
 

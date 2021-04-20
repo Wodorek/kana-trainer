@@ -8,6 +8,8 @@ import { setHeading, setMessage, displayModal } from '../Modal/modalSlice';
 import { restart } from '../QuizScreen/quizSlice';
 import { reset } from '../SelectionScreen/selectionSlice';
 import Button from '../../common/UIElements/Button';
+import { resetScore } from './scoreSlice';
+import ScoreCardsContainer from '../ScoreCards/ScoreCardsContainer';
 
 const StyledScorePage = styled.div`
   gap: 3rem;
@@ -23,9 +25,10 @@ const StyledScorePage = styled.div`
 `;
 
 const StyledScoreMessage = styled.p`
-  font-size: 4rem;
+  margin-top: 1rem;
+  font-size: 2rem;
   @media (max-width: 421px) {
-    font-size: 3rem;
+    font-size: 1.5rem;
   }
 `;
 
@@ -34,6 +37,7 @@ const StyledButtonGroup = styled.div`
   justify-content: space-around;
   display: flex;
   margin-top: 2rem;
+  margin-bottom: 2rem;
   @media (max-width: 421px) {
     flex-direction: column;
     gap: 2rem;
@@ -54,11 +58,13 @@ const Score = () => {
   const resetQuizHandler = () => {
     dispatch(reset());
     dispatch(restart());
+    dispatch(resetScore());
     history.push('/');
   };
 
   const restartQuizHandler = () => {
     dispatch(restart());
+    dispatch(resetScore());
     history.push('/quiz');
   };
 
@@ -78,7 +84,8 @@ const Score = () => {
 
   return (
     <StyledScorePage>
-      <StyledScoreMessage>{`You got ${percentage} % (${questionsCorrect} out of ${questionsTotal}) correct!`}</StyledScoreMessage>
+      <StyledScoreMessage>{`You got ${percentage} % (${questionsCorrect} out of ${questionsTotal}) correct! Here are the details:`}</StyledScoreMessage>
+      <ScoreCardsContainer />
       <StyledButtonGroup>
         <Button onClick={restartQuizHandler}>Try again</Button>
         <Button onClick={resetQuizHandler}>Change groups</Button>

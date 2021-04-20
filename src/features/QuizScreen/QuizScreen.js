@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import shuffle from 'lodash.shuffle';
 import ProgressBar from './ProgressBar';
 import StatsBox from '../StatsBox/StatsBox';
+import { isInRange } from '../../common/Util/isInRange';
+import { saveToScore } from '../ScoreScreen/scoreSlice';
 
 const StyledContainer = styled.div`
   width: 95%;
@@ -38,7 +40,7 @@ const QuizScreen = () => {
 
   const quizOn = useSelector((state) => state.selection.quizOn);
 
-  //I hate how this is done, that whole function is a travesty
+  //I hate how this is done, this whole function is a travesty
   //find out how to change it later
   //I should redo the whole dictionary structure...
 
@@ -64,10 +66,16 @@ const QuizScreen = () => {
           letter: letter,
           answers: charactersArrays[index][letter],
           index: 0,
+          parentGroup:
+            //reconstruct proper group name to use for score screen grouping later
+            //All I can say is: this just works...
+            charactersArrays[index][Object.keys(charactersArrays[index])[0]] +
+            Object.keys(charactersArrays[index])[0] +
+            '_group' +
+            `${isInRange(letter, 12352, 12447) ? 'H' : 'K'}`,
         });
       });
     });
-
     return spread;
   }, [selectedGroups]);
 
@@ -87,8 +95,15 @@ const QuizScreen = () => {
     [dispatch]
   );
 
-  const questionCompleteHandler = () => {
+  const questionCompleteHandler = (name, parentGroup, isCorrect) => {
     dispatch(completeQuestion());
+    dispatch(
+      saveToScore({
+        name: name,
+        parentGroup: parentGroup,
+        isCorrect: isCorrect,
+      })
+    );
   };
 
   const redirect = useCallback(() => {
@@ -127,7 +142,10 @@ const QuizScreen = () => {
         {questions.map((question) => {
           return (
             <Question
-              completeQuestion={questionCompleteHandler}
+              parentGroup={question.parentGroup}
+              completeQuestion={(name, parentGroup, isCorrect) =>
+                questionCompleteHandler(name, parentGroup, isCorrect)
+              }
               index={question.index}
               key={question.letter}
               name={question.letter}
