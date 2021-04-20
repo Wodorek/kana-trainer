@@ -7,7 +7,7 @@ const StContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-
+  min-width: 23rem;
   border: 2px solid ${(props) => theme.primary};
 `;
 
