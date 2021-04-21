@@ -12,6 +12,7 @@ const store = configureStore({
     modal: modalSlice,
     score: scoreSlice,
   },
+  devTools: false,
 });
 
 export default store;
