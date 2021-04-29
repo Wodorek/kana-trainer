@@ -10,6 +10,7 @@ import { reset } from '../SelectionScreen/selectionSlice';
 import Button from '../../common/UIElements/Button';
 import { resetScore } from './scoreSlice';
 import ScoreCardsContainer from '../ScoreCards/ScoreCardsContainer';
+import Footer from '../Footer/Footer';
 
 const StyledScorePage = styled.div`
   gap: 3rem;
@@ -19,6 +20,7 @@ const StyledScorePage = styled.div`
   align-items: center;
   text-align: center;
   min-height: 100vh;
+  height: 100%;
   @media (max-width: 421px) {
     padding: 1rem;
   }
@@ -33,7 +35,7 @@ const StyledScoreMessage = styled.p`
 `;
 
 const StyledButtonGroup = styled.div`
-  width: 70%;
+  width: 100%;
   justify-content: space-around;
   display: flex;
   margin-top: 2rem;
@@ -42,6 +44,16 @@ const StyledButtonGroup = styled.div`
     flex-direction: column;
     gap: 2rem;
   }
+`;
+
+const StContent = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1 0 auto;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Score = () => {
@@ -83,14 +95,21 @@ const Score = () => {
   }, [dispatch, history, questionsCorrect, questionsTotal]);
 
   return (
-    <StyledScorePage>
-      <StyledScoreMessage>{`You got ${percentage} % (${questionsCorrect} out of ${questionsTotal}) correct! Here are the details:`}</StyledScoreMessage>
-      <ScoreCardsContainer />
-      <StyledButtonGroup>
-        <Button onClick={restartQuizHandler}>Try again</Button>
-        <Button onClick={resetQuizHandler}>Change groups</Button>
-      </StyledButtonGroup>
-    </StyledScorePage>
+    <>
+      <StyledScorePage>
+        <StContent>
+          <StyledScoreMessage>{`You got ${percentage} % (${questionsCorrect} out of ${questionsTotal}) correct! Here are the details:`}</StyledScoreMessage>
+          <ScoreCardsContainer />
+          <StyledButtonGroup>
+            <Button onClick={resetQuizHandler}>Change groups</Button>
+            <Button start onClick={restartQuizHandler}>
+              Try again
+            </Button>
+          </StyledButtonGroup>
+        </StContent>
+        <Footer />
+      </StyledScorePage>
+    </>
   );
 };
 

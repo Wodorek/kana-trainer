@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { QuestionCircle } from '@styled-icons/fa-solid/QuestionCircle';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,19 +17,18 @@ import SelectorsContainer from './SelectorsContainer';
 import Button from '../../common/UIElements/Button';
 import Modal from '../Modal/Modal';
 import MobileFooter from '../../common/UIElements/MobileFooter';
-
-const load = keyframes`
-  0% {
-    width: 0
-  }
-  100%
-  {
-    width: 100%
-  }
-`;
+import Footer from '../Footer/Footer';
 
 const StContainer = styled.div`
+  min-height: 100vh;
+  height: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StContent = styled.div`
+  flex: 1 0 auto;
 `;
 
 const StyledIcon = styled(QuestionCircle)`
@@ -44,31 +43,6 @@ const StyledIcon = styled(QuestionCircle)`
     cursor: pointer;
     transition: 0.5s;
     transform: scale(1.2);
-  }
-`;
-
-const StyledMessage = styled.p`
-  position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 6rem;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
-  -webkit-text-fill-color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  &::before {
-    content: '少々お待ち下さい';
-    position: absolute;
-    -webkit-text-fill-color: black;
-    top: 0;
-    left: 0;
-    width: 100%;
-    color: blue;
-    overflow: hidden;
-    animation: ${load} 2s linear infinite;
   }
 `;
 
@@ -87,6 +61,7 @@ const StartButtonContainer = styled.div`
   justify-content: center;
   display: flex;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const SelectionScreen = (props) => {
@@ -139,48 +114,42 @@ const SelectionScreen = (props) => {
   };
 
   let content;
-  let startDiv;
-
-  if (mobileView) {
-    startDiv = <MobileFooter onClick={quizStartHandler} />;
-  } else {
-    startDiv = (
-      <StartButtonContainer>
-        <Button start onClick={quizStartHandler}>
-          Start
-        </Button>
-      </StartButtonContainer>
-    );
-  }
 
   if (!groups) {
-    content = <StyledMessage>少々お待ち下さい</StyledMessage>;
+    content = <div>:)</div>;
   } else {
     content = (
       <StContainer>
-        <Modal display={showModal} dismiss={closeModalHandler} />
-        <StyledIcon onClick={helpMessageHandler} />
-        <StyledScreen>
-          {Object.keys(groups).map((kanaType) => {
-            return (
-              <SelectorsContainer
-                key={kanaType}
-                groupName={kanaType}
-                items={groups[kanaType]}
-              />
-            );
-          })}
-        </StyledScreen>
+        <StContent>
+          <Modal display={showModal} dismiss={closeModalHandler} />
+          <StyledIcon onClick={helpMessageHandler} />
+          <StyledScreen>
+            {Object.keys(groups).map((kanaType) => {
+              return (
+                <SelectorsContainer
+                  key={kanaType}
+                  groupName={kanaType}
+                  items={groups[kanaType]}
+                />
+              );
+            })}
+          </StyledScreen>
+          {mobileView ? (
+            <MobileFooter onClick={quizStartHandler} />
+          ) : (
+            <StartButtonContainer>
+              <Button start onClick={quizStartHandler}>
+                Start
+              </Button>
+            </StartButtonContainer>
+          )}
+        </StContent>
+        <Footer />
       </StContainer>
     );
   }
 
-  return (
-    <>
-      {content}
-      {startDiv}
-    </>
-  );
+  return content;
 };
 
 export default SelectionScreen;
