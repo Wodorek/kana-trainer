@@ -12,6 +12,9 @@ const StFooter = styled.div`
   font-size: 1rem;
   flex-shrink: 0;
   background-image: linear-gradient(whitesmoke, rgb(160, 160, 160));
+  @media (max-width: 521px) {
+    display: none;
+  }
 `;
 
 const StLink = styled.a`
