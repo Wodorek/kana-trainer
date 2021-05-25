@@ -2,6 +2,13 @@ import { Github } from '@styled-icons/fa-brands';
 import React from 'react';
 import styled from 'styled-components';
 
+const StIcon = styled(Github)`
+  height: 1rem;
+  margin-bottom: 3px;
+  width: auto;
+  margin-left: 0.5rem;
+`;
+
 const StFooter = styled.div`
   display: flex;
   justify-content: center;
@@ -22,13 +29,11 @@ const StLink = styled.a`
   color: grey;
   text-shadow: -1px -1px 1px whitesmoke, 1px -1px 1px whitesmoke,
     -1px 1px 1px whitesmoke, 1px 1px 1px whitesmoke;
-`;
-
-const StIcon = styled(Github)`
-  height: 1rem;
-  margin-bottom: 3px;
-  width: auto;
-  margin-left: 0.5rem;
+  :hover {
+    ${StIcon} {
+      color: black;
+    }
+  }
 `;
 
 const Footer = () => {
