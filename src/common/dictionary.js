@@ -373,7 +373,7 @@ export const dictionary = {
 
 //     gya_group: {
 //       characters: {
-//         ぎゃ: ['gya'],
+//       ぎゃ: ['gya'],
 //       ぎゅ: ['gyu'],
 //       ぎょ: ['gyo'],
 //       }
