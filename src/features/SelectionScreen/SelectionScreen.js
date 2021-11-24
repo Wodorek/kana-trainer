@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { QuestionCircle } from '@styled-icons/fa-solid/QuestionCircle';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { quizStart } from './selectionSlice';
+import { quizStart, reset } from './selectionSlice';
 import {
   setHeading,
   setMessage,
@@ -12,6 +12,8 @@ import {
   closeModal,
   resetModal,
 } from '../Modal/modalSlice';
+import { resetQuiz } from '../QuizScreen/quizSlice';
+import { resetScore } from '../ScoreScreen/scoreSlice';
 import { dictionary } from '../../common/dictionary';
 import SelectorsContainer from './SelectorsContainer';
 import Button from '../../common/UIElements/Button';
@@ -81,7 +83,10 @@ const SelectionScreen = (props) => {
 
   useEffect(() => {
     setGroups(dictionary);
-  }, []);
+    dispatch(reset());
+    dispatch(resetQuiz());
+    dispatch(resetScore());
+  }, [dispatch]);
 
   const quizStartHandler = () => {
     if (selectedGroups.length === 0) {

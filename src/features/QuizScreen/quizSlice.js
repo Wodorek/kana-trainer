@@ -23,7 +23,7 @@ const quizSlice = createSlice({
       state.questionsCorrect = 0;
       state.questionsCompleted = 0;
     },
-    reset: () => initialState,
+    resetQuiz: () => initialState,
   },
 });
 
@@ -34,6 +34,7 @@ export const {
   questionCorrect,
   restart,
   completeQuestion,
+  resetQuiz,
 } = actions;
 
 export default reducer;

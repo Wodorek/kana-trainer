@@ -11,6 +11,8 @@ const App = () => {
   //Set up context to check if user picked kana groups for quiz
   //to prevent just typing URL instead clicking the button
 
+  console.log(window.history);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
